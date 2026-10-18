@@ -17,14 +17,14 @@
 <meta property="og:locale" content="es_ES">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚶</text></svg>">
-<link rel="stylesheet" href="vendor/leaflet.css">
+<link rel="stylesheet" href="leaflet.css">
 <style>
   /* tipografías alojadas aquí mismo (licencia OFL), sin llamadas a Google Fonts */
-  @font-face { font-family: "Fraunces"; font-style: normal; font-weight: 700; font-display: swap; src: url(vendor/fonts/fraunces-latin-700-normal.woff2) format("woff2"); }
-  @font-face { font-family: "Fraunces"; font-style: italic; font-weight: 500; font-display: swap; src: url(vendor/fonts/fraunces-latin-500-italic.woff2) format("woff2"); }
-  @font-face { font-family: "Public Sans"; font-style: normal; font-weight: 400; font-display: swap; src: url(vendor/fonts/public-sans-latin-400-normal.woff2) format("woff2"); }
-  @font-face { font-family: "Public Sans"; font-style: italic; font-weight: 400; font-display: swap; src: url(vendor/fonts/public-sans-latin-400-italic.woff2) format("woff2"); }
-  @font-face { font-family: "Public Sans"; font-style: normal; font-weight: 600; font-display: swap; src: url(vendor/fonts/public-sans-latin-600-normal.woff2) format("woff2"); }
+  @font-face { font-family: "Fraunces"; font-style: normal; font-weight: 700; font-display: swap; src: url(fraunces-latin-700-normal.woff2) format("woff2"); }
+  @font-face { font-family: "Fraunces"; font-style: italic; font-weight: 500; font-display: swap; src: url(fraunces-latin-500-italic.woff2) format("woff2"); }
+  @font-face { font-family: "Public Sans"; font-style: normal; font-weight: 400; font-display: swap; src: url(public-sans-latin-400-normal.woff2) format("woff2"); }
+  @font-face { font-family: "Public Sans"; font-style: italic; font-weight: 400; font-display: swap; src: url(public-sans-latin-400-italic.woff2) format("woff2"); }
+  @font-face { font-family: "Public Sans"; font-style: normal; font-weight: 600; font-display: swap; src: url(public-sans-latin-600-normal.woff2) format("woff2"); }
   :root {
     --ink:#16191d; --muted:#565d64; --paper:#f4f3ef; --panel:#fbfaf7; --line:#dedad1; --teal:#1d6f8c; --err:#a8261d; --field:#ffffff;
     --map-bg:#ecebe6; --map-street:#ffffff; --map-street-edge:#d3d0c7; --map-major:#fff6dc; --map-major-edge:#d9c99a;
@@ -190,10 +190,24 @@
 <div id="map" role="application" aria-label="Mapa"></div>
 <noscript><p style="padding:20px">Esta página necesita JavaScript. / This page needs JavaScript.</p></noscript>
 
-<script src="vendor/leaflet.js"></script>
+<script>
+// Si falta un fichero o algo falla al arrancar, la página lo dice en vez de quedarse en «Cargando…»
+window.__fail = function (msg) {
+  var s = document.getElementById("status"); if (!s) return;
+  s.className = "err"; s.textContent = "No se ha podido iniciar el mapa / The map could not start: " + msg;
+};
+window.addEventListener("error", function (e) {
+  var el = e.target;
+  if (el && el !== window && (el.src || el.href)) { window.__fail("falta / missing " + (el.src || el.href).split("/").pop()); return; }
+  if (!window.__ready && e.message && !/ResizeObserver/.test(e.message)) window.__fail(e.message.replace(/^Uncaught (Error: )?/, ""));
+}, true);
+window.addEventListener("unhandledrejection", function (e) { if (!window.__ready) window.__fail(String(e.reason && e.reason.message || e.reason)); });
+</script>
+<script src="leaflet.js"></script>
 <script src="core.js"></script>
 <script>
 "use strict";
+if (typeof L === "undefined" || typeof Core === "undefined") throw new Error((typeof L === "undefined" ? "leaflet.js" : "core.js") + " no se ha cargado / did not load");
 // ================= textos (ES / EN) =================
 const SUBS = {
   es: { supermarket: "Supermercados", convenience: "Tiendas de alimentación", greengrocer: "Fruterías", bakery: "Panaderías", butcher: "Carnicerías",
@@ -225,7 +239,7 @@ const I18N = {
     st_rows: ["Sin etiquetar", "Accesibles", "Acceso limitado", "No accesibles"],
     green_rows: ["Parques y jardines ≥ 0,5 ha", "Zonas verdes < 0,5 ha", "Zonas infantiles", "Parques sin contorno", "Jardines sin contorno"],
     loading: c => `Cargando el mapa de ${c.name}…`, preparing: "Preparando la red de calles…",
-    load_err: "No se pudieron cargar los datos del mapa ({e}). Recarga la página.",
+    load_err: "No se pudieron cargar los datos del mapa ({e}). Recarga la página; si sigue fallando, ese fichero no está en el sitio.",
     place: "Lugar",
     outside: c => `Ese punto queda fuera de la zona cubierta (${c.radius} km alrededor de ${c.start}) o a más de 300 m de cualquier calle o camino.`,
     no_usable: "Con estos ajustes no hay ningún tramo utilizable a menos de 300 m de ese punto.",
@@ -271,7 +285,7 @@ const I18N = {
     st_rows: ["Not tagged", "Step-free", "Limited access", "Not step-free"],
     green_rows: ["Parks & gardens ≥ 0.5 ha", "Green spaces < 0.5 ha", "Playgrounds", "Parks without outline", "Gardens without outline"],
     loading: c => `Loading the map of ${c.name}…`, preparing: "Preparing the street network…",
-    load_err: "Could not load the map data ({e}). Please reload the page.",
+    load_err: "Could not load the map data ({e}). Please reload the page; if it keeps failing, that file is missing from the site.",
     place: "Place",
     outside: c => `That point is outside the covered area (${c.radius} km around ${c.start}) or more than 300 m from any street or path.`,
     no_usable: "With these settings there is no usable segment within 300 m of that point.",
@@ -306,8 +320,8 @@ const t = k => I18N[LANG][k];
 const fmt = (v, d = 1) => LANG === "es" ? v.toFixed(d).replace(".", ",") : v.toFixed(d);
 const TOUCH = matchMedia("(pointer: coarse)").matches;
 let DATA_DATE = "";
-// lugares disponibles (data/cities.json) y datos ya cargados de cada uno
-let CITIES = [{ id: "madrid", name: "Madrid", start: "Puerta del Sol", radius_km: 7 }], CITY = "madrid";
+// lugares disponibles (cities.json) y datos ya cargados de cada uno (ficheros <lugar>-*.gz, todos en la raíz)
+let CITIES = [{ id: "madrid", name: "Madrid", start: "Puerta del Sol", radius_km: 7 }, { id: "navalcarnero", name: "Navalcarnero", start: "Plaza de Segovia", radius_km: 5 }], CITY = "madrid";   // por si falta cities.json
 const CACHE = new Map();
 let HAS_ST = true;   // ¿hay estaciones en el lugar elegido?
 const cityInfo = () => { const c = CITIES.find(x => x.id === CITY) || CITIES[0]; return { radius: String(c.radius_km).replace(".", LANG === "es" ? "," : "."), start: c.start, name: c.name,
@@ -346,6 +360,7 @@ function subPath(g, e, a, b) {
 // ================= carga de datos (.gz binario, con barra de progreso) =================
 const progress = {};
 function showProgress() {
+  if (!lastStatus || lastStatus[0] !== "loading") return;   // ya terminó (o falló): no tapar el mensaje
   let got = 0, total = 0;
   for (const k in progress) { got += progress[k][0]; total += progress[k][1]; }
   const pct = total ? Math.min(99, Math.round(got / total * 100)) : 0;
@@ -370,7 +385,7 @@ async function gunzip(u8) {
   if ("DecompressionStream" in window) {
     try { return new Uint8Array(await new Response(new Blob([u8]).stream().pipeThrough(new DecompressionStream("gzip"))).arrayBuffer()); } catch (e) { /* sigue con fflate */ }
   }
-  if (!window.fflate) await loadScript("vendor/fflate.min.js");
+  if (!window.fflate) await loadScript("fflate.min.js");
   return window.fflate.gunzipSync(u8);
 }
 
@@ -650,7 +665,7 @@ function draw() {
 // ================= enlace con estado: los ajustes van en la dirección, tras el # =================
 let hashTimer;
 function hashParams() {
-  return new URLSearchParams({ lat: origin.lat.toFixed(5), lng: origin.lng.toFixed(5), min: $("minutes").value,
+  return new URLSearchParams({ lat: origin.lat.toFixed(6), lng: origin.lng.toFixed(6), min: $("minutes").value,
     spd: (+$("speed").value).toFixed(2), st: $("steps").checked ? 1 : 0, cu: $("slope").checked ? 1 : 0, pm: $("avoidSteep").checked ? $("maxGrade").value : 0,
     pu: $("avoidSteep").checked && $("uncBarrier").checked ? 1 : 0, z: map.getZoom(), city: CITY, lang: LANG });
 }
@@ -774,7 +789,7 @@ async function loadCity(id, fromHash) {
   let D = CACHE.get(id);
   if (!D) {
     for (const k in progress) delete progress[k];
-    const [gBytes, xBytes, pBytes] = await Promise.all(["graph.bin.gz", "extra.json.gz", "pois.json.gz"].map(f => fetchBytes(`data/${id}/${f}`).then(gunzip)));
+    const [gBytes, xBytes, pBytes] = await Promise.all(["graph.bin.gz", "extra.json.gz", "pois.json.gz"].map(f => fetchBytes(`${id}-${f}`).then(gunzip)));
     lastStatus = ["preparing", "busy"]; setStatus(t("preparing"), "busy");
     await new Promise(r => setTimeout(r, 0));
     const g = Core.parseGraph(gBytes), x = JSON.parse(new TextDecoder().decode(xBytes)), p = Core.parsePois(JSON.parse(new TextDecoder().decode(pBytes)));
@@ -803,11 +818,12 @@ async function loadCity(id, fromHash) {
 }
 (async function load() {
   try {
-    try { const r = await fetch("data/cities.json"); if (r.ok) CITIES = (await r.json()).cities; } catch (e) { /* sin índice: solo Madrid */ }
+    try { const r = await fetch("cities.json"); if (r.ok) CITIES = (await r.json()).cities; else console.warn("cities.json: " + r.status); } catch (e) { console.warn("cities.json", e); }
     $("city").innerHTML = CITIES.map(c => `<option value="${c.id}">${c.name}</option>`).join("");
     const want = qs.get("city"), first = CITIES.some(c => c.id === want) ? want : CITIES[0].id;
     await loadCity(first, true);
     $("q").disabled = false; $("locate").disabled = false; $("city").disabled = CITIES.length < 2;
+    window.__ready = true;
   } catch (err) {
     console.error(err);
     lastStatus = null; setStatus(t("load_err").replace("{e}", err.message), "err");

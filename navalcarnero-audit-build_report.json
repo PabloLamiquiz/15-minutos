@@ -1,0 +1,374 @@
+{
+ "city": "navalcarnero",
+ "meta": {
+  "created": "2026-10-16T11:31:41.009Z",
+  "config": {
+   "id": "navalcarnero",
+   "name": "Navalcarnero",
+   "start": "Plaza de Segovia",
+   "center": [
+    40.28763,
+    -4.01426
+   ],
+   "radius": 5000,
+   "marginDeg": 0.01,
+   "zoom": 15,
+   "pbf": {
+    "url": "https://download.geofabrik.de/europe/spain/madrid-261001.osm.pbf",
+    "md5": "076135a2cba8a9176307f9a311193a73"
+   },
+   "dem": {
+    "type": "ign-wcs",
+    "coverage": "Elevacion25830_5",
+    "name": "MDT05 del IGN (5 m)",
+    "url": "https://servicios.idee.es/wcs-inspire/mdt",
+    "attribution": {
+     "es": "Elevación: MDT05 © IGN (CC BY 4.0 scne.es)",
+     "en": "Elevation: MDT05 © IGN Spain (CC BY 4.0 scne.es)",
+     "url": "https://www.scne.es"
+    }
+   }
+  },
+  "bbox": [
+   -4.073208017852125,
+   40.242663983225356,
+   -3.9553119821478746,
+   40.332596016774644
+  ],
+  "osm": {
+   "bytes": 85089786,
+   "sha256": "2afed1276d0ee785a0ef8b46ef3bc7d398e8388018d9f2e94e38bb949c4fb432",
+   "timestamp": "2026-10-01T20:22:06.000Z",
+   "replicationUrl": "https://download.geofabrik.de/europe/spain/madrid-updates"
+  }
+ },
+ "dem": {
+  "source": "IGN MDT05 (WCS IDEE)",
+  "coverage": "Elevacion25830_5",
+  "url": "https://servicios.idee.es/wcs-inspire/mdt",
+  "resolution_m": 5,
+  "tiles": 9,
+  "rect": [
+   408565,
+   4454978,
+   419002,
+   4465376
+  ],
+  "note": "muestreado en el navegador el 16/10/2026 con build/dem_ign.mjs (malla única de 9 peticiones WCS, terrazas reconstruidas con build/terrain.mjs); sin reconstrucción, las alturas coinciden byte a byte con las del primer muestreo",
+  "grid": [
+   408565,
+   4454975,
+   419005,
+   4465380
+  ],
+  "cellsMissing": 0,
+  "deterrace": {
+   "method": "bandas de 1 m",
+   "R_m": 300,
+   "blend_m": [
+    10,
+    20
+   ],
+   "bands": 138,
+   "cells": 4345128,
+   "integerCells": 609821,
+   "rebuilt": 2679867,
+   "keptPeakOrPit": 6970
+  }
+ },
+ "slopeParams": {
+  "step": 2,
+  "window": 30,
+  "extend": 10,
+  "perp": 3,
+  "stepJump": 0.5,
+  "stepRatio": 3,
+  "crossJump": 1.5,
+  "flankGrad": 0.25,
+  "flankHeight": 2,
+  "structSpan": 150,
+  "thresholds": [
+   0.04,
+   0.06,
+   0.08,
+   0.1,
+   0.12
+  ],
+  "minPiece": 30
+ },
+ "stage1": {
+  "graph": {
+   "walkWays": 2114,
+   "edgesBefore": 3731,
+   "kmBefore": 507.35499509332277,
+   "kmMain": 504.8919425002664,
+   "km": 504.8919425002664,
+   "edgesMainComponent": 3708,
+   "edges": 3708,
+   "nodes": 2550,
+   "componentShare": 0.9938354328598231,
+   "edgeKinds": {
+    "steps": 2,
+    "steps_ramp": 0,
+    "bridge": 18,
+    "tunnel": 12,
+    "indoor": 0,
+    "layer": 0,
+    "incline": 1
+   }
+  },
+  "destTypes": [
+   {
+    "cat": "education",
+    "sub": "school",
+    "node": 3,
+    "way": 8,
+    "relation": 0,
+    "polygon": 8,
+    "dropped_duplicate": 0,
+    "dropped_station": 0,
+    "kept": 11
+   },
+   {
+    "cat": "education",
+    "sub": "kindergarten",
+    "node": 7,
+    "way": 0,
+    "relation": 0,
+    "polygon": 0,
+    "dropped_duplicate": 0,
+    "dropped_station": 0,
+    "kept": 7
+   },
+   {
+    "cat": "bus",
+    "sub": "bus_stop",
+    "node": 78,
+    "way": 0,
+    "relation": 0,
+    "polygon": 0,
+    "dropped_duplicate": 0,
+    "dropped_station": 0,
+    "kept": 78
+   },
+   {
+    "cat": "grocery",
+    "sub": "supermarket",
+    "node": 3,
+    "way": 5,
+    "relation": 0,
+    "polygon": 5,
+    "dropped_duplicate": 0,
+    "dropped_station": 0,
+    "kept": 8
+   },
+   {
+    "cat": "eating",
+    "sub": "restaurant",
+    "node": 8,
+    "way": 0,
+    "relation": 0,
+    "polygon": 0,
+    "dropped_duplicate": 0,
+    "dropped_station": 0,
+    "kept": 8
+   },
+   {
+    "cat": "grocery",
+    "sub": "convenience",
+    "node": 3,
+    "way": 0,
+    "relation": 0,
+    "polygon": 0,
+    "dropped_duplicate": 0,
+    "dropped_station": 0,
+    "kept": 3
+   },
+   {
+    "cat": "green",
+    "sub": "playground",
+    "node": 1,
+    "way": 4,
+    "relation": 0,
+    "polygon": 4,
+    "dropped_duplicate": 0,
+    "dropped_station": 0,
+    "kept": 5
+   },
+   {
+    "cat": "grocery",
+    "sub": "greengrocer",
+    "node": 1,
+    "way": 0,
+    "relation": 0,
+    "polygon": 0,
+    "dropped_duplicate": 0,
+    "dropped_station": 0,
+    "kept": 1
+   },
+   {
+    "cat": "health",
+    "sub": "pharmacy",
+    "node": 1,
+    "way": 0,
+    "relation": 0,
+    "polygon": 0,
+    "dropped_duplicate": 0,
+    "dropped_station": 0,
+    "kept": 1
+   },
+   {
+    "cat": "eating",
+    "sub": "bar",
+    "node": 1,
+    "way": 0,
+    "relation": 0,
+    "polygon": 0,
+    "dropped_duplicate": 0,
+    "dropped_station": 0,
+    "kept": 1
+   },
+   {
+    "cat": "eating",
+    "sub": "cafe",
+    "node": 3,
+    "way": 0,
+    "relation": 0,
+    "polygon": 0,
+    "dropped_duplicate": 0,
+    "dropped_station": 0,
+    "kept": 3
+   },
+   {
+    "cat": "green",
+    "sub": "park",
+    "node": 0,
+    "way": 30,
+    "relation": 1,
+    "polygon": 31,
+    "dropped_duplicate": 0,
+    "dropped_station": 0,
+    "kept": 31
+   },
+   {
+    "cat": "green",
+    "sub": "garden",
+    "node": 0,
+    "way": 5,
+    "relation": 0,
+    "polygon": 5,
+    "dropped_duplicate": 0,
+    "dropped_station": 0,
+    "kept": 5
+   }
+  ],
+  "duplicates": [],
+  "entrances": {
+   "stations": 0,
+   "merged": 0,
+   "entrances": 0,
+   "viaRel": 0,
+   "viaNear": 0,
+   "orphan": 0
+  },
+  "knownEntrances": {
+   "polygonsWithKnownEntrances": 1,
+   "knownEntranceNodes": 1
+  },
+  "greenClasses": {
+   "playground": 5,
+   "green_large": 11,
+   "green_small": 25
+  },
+  "rules": {
+   "grocery": [
+    "shop",
+    [
+     "supermarket",
+     "convenience",
+     "greengrocer",
+     "bakery",
+     "butcher"
+    ]
+   ],
+   "health": [
+    "amenity",
+    [
+     "pharmacy",
+     "doctors",
+     "clinic",
+     "hospital",
+     "dentist"
+    ]
+   ],
+   "education": [
+    "amenity",
+    [
+     "school",
+     "kindergarten",
+     "library"
+    ]
+   ],
+   "green": [
+    "leisure",
+    [
+     "park",
+     "garden",
+     "playground"
+    ]
+   ],
+   "eating": [
+    "amenity",
+    [
+     "cafe",
+     "restaurant",
+     "pub",
+     "bar"
+    ]
+   ]
+  },
+  "precedence": "railway=station|halt|tram_stop → railway=subway_entrance|train_station_entrance → amenity=bench → shop → amenity (salud) → amenity (educación) → leisure → amenity (comer) → highway=bus_stop"
+ },
+ "stage3": {
+  "km_by_class": {
+   "0-4": 240.32,
+   "6-8": 59.64,
+   "4-6": 126.07,
+   ">12": 21.87,
+   "10-12": 24.07,
+   "8-10": 31.69,
+   "unknown": 1.19,
+   "steps": 0.04
+  },
+  "km_flagged": {
+   "structure": 3.88,
+   "discontinuity": 17.05,
+   "missing": 0,
+   "layer": 0
+  },
+  "km_total": 504.89,
+  "length_edges_m": 504891.949,
+  "max_piece_sum_diff_m": 0,
+  "edges": 3708,
+  "pieces": 6169,
+  "samples": 517821,
+  "samples_missing": 0,
+  "attach": {
+   "viaEntr": 8,
+   "viaKnown": 1,
+   "viaSnap": 153,
+   "none": 0,
+   "snapDistance_m": {
+    "p50": 5.4,
+    "p90": 13.6,
+    "max": 37.8
+   }
+  }
+ },
+ "output": {
+  "nodes": 2550,
+  "edges": 3708,
+  "pieces": 6169,
+  "pois": 162
+ }
+}

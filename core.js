@@ -1,5 +1,5 @@
 // Núcleo de cálculo de la página: lectura de datos, enganche del origen y de los destinos, Dijkstra, alcance y
-// recuento. Lo usan index.html y las pruebas (build/test/test_core.mjs), así que lo que se comprueba es exactamente
+// recuento. Lo usan index.html y las pruebas (test_core.mjs), así que lo que se comprueba es exactamente
 // lo que calcula la página.
 //
 // Cada tramo de la red lleva sus «trozos» de pendiente homogénea, en orden desde u hasta v: longitud, pendiente de
@@ -13,7 +13,7 @@ const R_LAT = 110540, R_LON = 111320;
 const mercX = lon => lon / 360 + 0.5, mercY = lat => 0.5 - Math.log(Math.tan(Math.PI / 4 + lat * Math.PI / 360)) / (2 * Math.PI);
 
 // ---------------------------------------------------------------- datos
-// graph.bin v4 (ver build/write.mjs)
+// graph.bin v4 (ver write.mjs)
 function parseGraph(u8) {
   const buf = u8.buffer.slice(u8.byteOffset, u8.byteOffset + u8.byteLength);
   const h = new Uint32Array(buf, 0, 8);
@@ -57,7 +57,7 @@ function parseGraph(u8) {
     ecf, ecb, emaxg, eunc, adjStart, adjEdge, nB, bk, bst, bmx, bmy };
 }
 
-// pois.json (ver build/write.mjs: encodeDestinations)
+// pois.json (ver write.mjs: encodeDestinations)
 function parsePois(J) {
   const n = J.c.length;
   const P = { n, cats: J.cats, subs: J.subs, greenClasses: J.greenClasses, names: J.names,

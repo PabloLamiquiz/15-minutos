@@ -69,7 +69,7 @@ export function encodeDestinations(dests, catList, subList, nodeOfOsmIdx) {
     col.snap.push(d.snap ? d.snap.flat() : []);
     col.ent.push(d.entrances ? d.entrances.map(nodeOfOsmIdx) : []);
   }
-  const { id, ...rest } = col;   // los ids de OSM van en data/<lugar>/audit/pois.csv.gz, que la página no necesita
+  const { id, ...rest } = col;   // los ids de OSM van en <lugar>-audit-pois.csv.gz, que la página no necesita
   return { cats: catList, subs: subList, greenClasses: GREEN_CLASSES, names, ...rest };
 }
 

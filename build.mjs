@@ -3,7 +3,7 @@
 //   1. OSM: red peatonal, destinos, duplicados, bocas de metro, zonas verdes y mapa base → estado intermedio
 //   2. Elevación: perfil cada 2 m sobre la geometría real de cada tramo (MDT 2025 del Ayuntamiento en Madrid, MDT05
 //      del IGN fuera del término municipal)
-//   3. Pendientes por trozos, enganche de destinos y escritura de ficheros (data/<lugar>/ y data/<lugar>/audit/)
+//   3. Pendientes por trozos, enganche de destinos y escritura de ficheros (<lugar>-*.gz y <lugar>-audit-*)
 import { readOSM, buildWalkGraph, buildPolygons, buildDestinations, findDuplicates, greenClass, linkEntrances, buildBasemap,
   segmentIndex, attachDestinations, knownEntrances, CATS, RULES } from "./osm_build.mjs";
 import { samplePlan, computeSlopes, SLOPE_PARAMS, Q, ORIGIN } from "./slopes.mjs";
@@ -13,7 +13,7 @@ import { encodeGraph, encodeDestinations, csv, GREEN_CLASSES } from "./write.mjs
 import { bboxFromPoint, utm30 } from "./geo.mjs";
 import { packState, unpackState, gzip, enc } from "./state.mjs";
 
-// Lugares disponibles. Cada uno se genera por separado en data/<id>/ y la página deja elegir entre ellos.
+// Lugares disponibles. Cada uno se genera por separado en ficheros <id>-* (todos en la raíz, sin carpetas) y la página deja elegir entre ellos.
 // Extractos de OpenStreetMap de Geofabrik (Comunidad de Madrid). Geofabrik borra los ficheros diarios a los pocos días
 // y conserva más tiempo los del día 1 de cada mes; se documentan nombre, md5 y fecha de los datos de cada uno.
 const PBF_MADRID = { url: "https://download.geofabrik.de/europe/spain/madrid-261006.osm.pbf", md5: "ad4f40446f40f6ec7e279eb90215d133",
@@ -215,9 +215,9 @@ function ruleText(cat, sub) {
 
 // ---------------------------------------------------------------- escritura
 export async function writeOutputs(out, write, city = "madrid") {
-  for (const [name, bytes] of Object.entries(out.files)) await write(`data/${city}/${name}.gz`, await gzip(bytes));
-  await write(`data/${city}/audit/build_report.json`, enc(JSON.stringify(out.report, null, 1)));
-  for (const [name, text] of Object.entries(out.audit)) await write(`data/${city}/audit/${name}`, name.endsWith(".gz") ? await gzip(enc(text)) : enc(text));
+  for (const [name, bytes] of Object.entries(out.files)) await write(`${city}-${name}.gz`, await gzip(bytes));
+  await write(`${city}-audit-build_report.json`, enc(JSON.stringify(out.report, null, 1)));
+  for (const [name, text] of Object.entries(out.audit)) await write(`${city}-audit-${name}`, name.endsWith(".gz") ? await gzip(enc(text)) : enc(text));
 }
 
 // índice de lugares para la página

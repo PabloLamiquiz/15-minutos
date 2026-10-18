@@ -1,8 +1,8 @@
 // Línea de órdenes (Node ≥ 18). Ejemplos:
-//   node build/cli.mjs --city madrid --pbf madrid-261006.osm.pbf --out .              (todo: OSM, alturas y ficheros)
-//   node build/cli.mjs --city navalcarnero --pbf madrid-261006.osm.pbf --out .
-//   node build/cli.mjs --city madrid --pbf madrid-261006.osm.pbf --state-out estado.json.gz --z-out alturas.bin.gz
-//   node build/cli.mjs --city madrid --state estado.json.gz --z alturas.bin.gz --z-meta alturas.json --out .
+//   node cli.mjs --city madrid --pbf madrid-261006.osm.pbf --out .              (todo: OSM, alturas y ficheros)
+//   node cli.mjs --city navalcarnero --pbf madrid-261006.osm.pbf --out .
+//   node cli.mjs --city madrid --pbf madrid-261006.osm.pbf --state-out estado.json.gz --z-out alturas.bin.gz
+//   node cli.mjs --city madrid --state estado.json.gz --z alturas.bin.gz --z-meta alturas.json --out .
 // Las alturas se leen de la fuente de cada lugar (CITIES en build.mjs): el MDT 2025 del Ayuntamiento para Madrid
 // (--mdt permite usar una copia local de MDT_1m.zip) y el MDT05 del IGN por WCS para Navalcarnero.
 import { readFileSync, writeFileSync, mkdirSync, createReadStream } from "node:fs";
@@ -31,7 +31,7 @@ else if (args.pbf) {
   packed.meta.osm.md5 = md5;
   if (args["state-out"]) write(args["state-out"], await gzip(enc(JSON.stringify(packed))));
 } else {
-  console.error("uso: node build/cli.mjs --city <lugar> (--pbf extracto.osm.pbf | --state estado.json.gz) [--z alturas.bin.gz] [--mdt MDT_1m.zip] [--out carpeta]");
+  console.error("uso: node cli.mjs --city <lugar> (--pbf extracto.osm.pbf | --state estado.json.gz) [--z alturas.bin.gz] [--mdt MDT_1m.zip] [--out carpeta]");
   process.exit(1);
 }
 const state = unpackState(packed);
@@ -47,5 +47,5 @@ if (args.z) {
 }
 const res = stage3(state, z, demMeta, cfg);
 await writeOutputs(res, write, cfg.id);
-write("data/cities.json", enc(JSON.stringify(citiesIndex(), null, 1)));
+write("cities.json", enc(JSON.stringify(citiesIndex(), null, 1)));
 console.log(JSON.stringify(res.report.stage3, null, 1));

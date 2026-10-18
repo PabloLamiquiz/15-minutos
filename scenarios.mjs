@@ -1,15 +1,15 @@
 // Escenarios de referencia (los mismos lugares y ajustes que se midieron en la versión publicada v5) calculados con el
 // núcleo de la página (core.js) sobre los datos actuales:
-//   node build/test/scenarios.mjs data/madrid build/test/scenarios.json [build/test/scenarios_v5.json]
+//   node scenarios.mjs madrid scenarios.json [scenarios_v5.json]
 // Con el tercer argumento, añade la cifra de la v5 para comparar.
 import { readFileSync } from "node:fs";
 import { gunzipSync } from "node:zlib";
 import { createRequire } from "node:module";
-const Core = createRequire(import.meta.url)("../../core.js");
-const [dir, scenF, v5F] = process.argv.slice(2);
+const Core = createRequire(import.meta.url)("./core.js");
+const [city, scenF, v5F] = process.argv.slice(2), here = new URL(".", import.meta.url).pathname, file = f => here + city + "-" + f;
 const S = JSON.parse(readFileSync(scenF, "utf8")), V5 = v5F ? JSON.parse(readFileSync(v5F, "utf8")) : null;
-const G = Core.parseGraph(new Uint8Array(gunzipSync(readFileSync(dir + "/graph.bin.gz")))), EG = Core.buildEdgeGrid(G);
-const P = Core.parsePois(JSON.parse(gunzipSync(readFileSync(dir + "/pois.json.gz")).toString()));
+const G = Core.parseGraph(new Uint8Array(gunzipSync(readFileSync(file("graph.bin.gz"))))), EG = Core.buildEdgeGrid(G);
+const P = Core.parsePois(JSON.parse(gunzipSync(readFileSync(file("pois.json.gz"))).toString()));
 const T = S.minutes * 60, REF = { speed: 1.4, avoidSteps: false, slope: false, maxGrade: 0, uncertainBarrier: false };
 const amen = [0, 1, 2, 3, 4];
 const rows = [];

@@ -1,10 +1,10 @@
-// Prueba sintética de la reconstrucción de terrazas (build/terrain.mjs):
-//   node build/test/test_terrain.mjs
+// Prueba sintética de la reconstrucción de terrazas (terrain.mjs):
+//   node test_terrain.mjs
 // Una ladera con pendiente conocida, redondeada a metros enteros en una malla de 5 m (como el MDT05), se reconstruye y
 // se mide la pendiente en ventanas de 10 y 30 m a lo largo de una línea, antes y después. Es una comprobación de
 // consistencia: el MDT05 real no es un redondeo puro (las transiciones están suavizadas); el contraste con datos reales
 // está en AUDITORIA.md, apartado 6.
-import { deterrace, bilinear } from "../terrain.mjs";
+import { deterrace, bilinear } from "./terrain.mjs";
 
 const NC = 400, NR = 400, cs = 5;
 let fails = 0;

@@ -32,15 +32,18 @@ Herramienta exploratoria que muestra hasta dónde llegas andando en un tiempo da
 
 No hay servidor. Los datos de cada lugar viajan con la página y el navegador calcula el recorrido con el algoritmo de Dijkstra (`core.js`). El mapa base se dibuja con los mismos datos, sin servicio de teselas.
 
-```
-data/cities.json                     lugares disponibles (el selector se llena con este fichero)
-data/<lugar>/graph.bin.gz            red peatonal; cada tramo lleva sus trozos de pendiente (posición,
-                                     pendiente máxima, factores de tiempo de subida y bajada, calidad)
-data/<lugar>/extra.json.gz           nombres, parques, agua, fuentes y parámetros
-data/<lugar>/pois.json.gz            servicios, con sus enganches a la red
-data/<lugar>/audit/                  informes de generación: build_report.json, tipos y duplicados de
-                                     servicios, enganches, pois.csv.gz (ids de OpenStreetMap)
-```
+Todos los ficheros están en la carpeta principal, sin subcarpetas, para que se puedan subir a GitHub de una vez seleccionándolos y arrastrándolos.
+
+| Fichero | Qué es |
+|---|---|
+| `index.html`, `core.js` | La página y el cálculo |
+| `leaflet.js`, `leaflet.css`, `fflate.min.js`, `*.woff2` | Bibliotecas y tipografías (`licencias-terceros.md`) |
+| `cities.json` | Lugares disponibles; el selector se llena con este fichero |
+| `<lugar>-graph.bin.gz` | Red peatonal. Cada tramo lleva sus trozos de pendiente: posición, pendiente máxima, factores de tiempo de subida y bajada, calidad |
+| `<lugar>-extra.json.gz` | Nombres, parques, agua, fuentes y parámetros |
+| `<lugar>-pois.json.gz` | Servicios, con sus enganches a la red |
+| `<lugar>-audit-*` | Informes de generación: `build_report.json`, tipos y duplicados de servicios, enganches, `pois.csv.gz` con los ids de OpenStreetMap |
+| `*.mjs` | Generación de los datos (`cli.mjs`, `build.mjs`, `slopes.mjs`, `terrain.mjs`…) y pruebas (`test_*.mjs`, `scenarios.mjs`) |
 
 | | Madrid | Navalcarnero |
 |---|---|---|
@@ -51,16 +54,16 @@ data/<lugar>/audit/                  informes de generación: build_report.json,
 | Terreno | MDT 2025 del Ayuntamiento de Madrid (nivel de 2 m) | MDT05 del IGN (5 m), reconstruido entre curvas de nivel |
 | Pendiente de barrera | máximo en ventanas de 10 m | máximo en ventanas de 30 m |
 
-Los datos se generan con `build/` (Node ≥ 18):
+Los datos se generan con `cli.mjs` (Node ≥ 18):
 
 ```
-node build/cli.mjs --city madrid --pbf madrid-261006.osm.pbf --out .
-node build/cli.mjs --city navalcarnero --pbf madrid-261001.osm.pbf --out .
+node cli.mjs --city madrid --pbf madrid-261006.osm.pbf --out .
+node cli.mjs --city navalcarnero --pbf madrid-261001.osm.pbf --out .
 ```
 
-Para añadir otro lugar basta una entrada en `CITIES` (`build/build.mjs`), con su extracto de OpenStreetMap y su fuente de terreno.
+Para añadir otro lugar basta una entrada en `CITIES` (`build.mjs`), con su extracto de OpenStreetMap y su fuente de terreno.
 
-`AUDITORIA.md` explica el método de pendientes, las comprobaciones y sus resultados. Las pruebas están en `build/test/`.
+`AUDITORIA.md` explica el método de pendientes, las comprobaciones y sus resultados. Las pruebas son `test_core.mjs`, `test_terrain.mjs`, `test_build.mjs` y `scenarios.mjs`.
 
 Para verlo en tu ordenador:
 
@@ -68,7 +71,7 @@ Para verlo en tu ordenador:
 2. Ejecuta `python3 -m http.server 8000`.
 3. Ve a http://localhost:8000.
 
-Abrir `index.html` con doble clic no funciona, porque la página tiene que cargar los ficheros de `data/`.
+Abrir `index.html` con doble clic no funciona, porque la página tiene que cargar los ficheros de datos.
 
 ## Limitaciones
 
@@ -93,8 +96,8 @@ Abrir `index.html` con doble clic no funciona, porque la página tiene que carga
 - **Origen del proyecto.** Basado en [«15 minutes. For whom?»](https://github.com/martincantcode/15-minutes) de Martin Bangratz, a su vez inspirado en la ciudad de 15 minutos de Carlos Moreno. Código bajo licencia MIT (ver `LICENSE`).
 - **Elevación en Madrid.** MDT 2025 © Ayuntamiento de Madrid ([geoportal.madrid.es](https://geoportal.madrid.es)).
 - **Elevación en Navalcarnero.** MDT05 © Instituto Geográfico Nacional, CC BY 4.0 [scne.es](https://www.scne.es).
-- **Datos de OpenStreetMap.** © colaboradores de [OpenStreetMap](https://www.openstreetmap.org/copyright). Los ficheros de `data/` son una base de datos derivada de OpenStreetMap, disponible bajo la [Open Database License (ODbL)](https://opendatacommons.org/licenses/odbl/).
-- **Bibliotecas y tipografías.** Leaflet (BSD-2), fflate (MIT) y las tipografías Fraunces y Public Sans (SIL OFL 1.1): ver `vendor/LICENSES.md`.
+- **Datos de OpenStreetMap.** © colaboradores de [OpenStreetMap](https://www.openstreetmap.org/copyright). Los ficheros de datos (`cities.json` y `<lugar>-*`) son una base de datos derivada de OpenStreetMap, disponible bajo la [Open Database License (ODbL)](https://opendatacommons.org/licenses/odbl/).
+- **Bibliotecas y tipografías.** Leaflet (BSD-2), fflate (MIT) y las tipografías Fraunces y Public Sans (SIL OFL 1.1): ver `licencias-terceros.md`.
 
 ---
 
@@ -104,7 +107,7 @@ Interactive map of how far you can walk in a given time, in Madrid (7 km around 
 
 - **Slopes.** In Madrid they come from the City Council's 2025 terrain model, as the maximum over 10 m windows along each segment. In Navalcarnero they come from IGN's MDT05, rebuilt between contour lines and measured over 30 m. Tobler's hiking function sets walking times.
 - **Metro.** Reach is measured to station entrances.
-- **How it runs.** Everything runs in the browser on OpenStreetMap data (© OpenStreetMap contributors, ODbL) bundled in `data/`. There is no server and no tile service.
+- **How it runs.** Everything runs in the browser on OpenStreetMap data (© OpenStreetMap contributors, ODbL) bundled with the page. There is no server and no tile service.
 - **Origin.** Based on [“15 minutes. For whom?”](https://github.com/martincantcode/15-minutes) by Martin Bangratz (MIT).
 
 Pick the place and the language on the page. Method and validation are in `AUDITORIA.md` (in Spanish).

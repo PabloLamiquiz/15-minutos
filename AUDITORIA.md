@@ -32,15 +32,15 @@ Cada comprobación lleva una de estas dos marcas, para no dar por validado lo qu
 
 | # | Problema en la v5 publicada | Efecto | Estado en esta rama |
 |---|---|---|---|
-| E1 | Pendiente = desnivel entre los cruces del tramo (MDT05, 5 m) / `max(L, 20 m)` | Ignora subidas y bajadas dentro del tramo; en puentes y junto a muros un cruce toma la cota de abajo | Corregido (`build/slopes.mjs`) y en la página |
+| E1 | Pendiente = desnivel entre los cruces del tramo (MDT05, 5 m) / `max(L, 20 m)` | Ignora subidas y bajadas dentro del tramo; en puentes y junto a muros un cruce toma la cota de abajo | Corregido (`slopes.mjs`) y en la página |
 | E2 | El origen se unía en línea recta a todos los cruces a menos de 60–400 m | Podía «saltar» escaleras, muros o tramos excluidos | Corregido (`core.js`, `solve`): proyección sobre el trozo permitido más cercano, a 300 m como mucho, y salida por los dos extremos de ese tramo |
 | E3 | Cada servicio iba al cruce más cercano, sin mirar si se llegaba a él por tramos permitidos | Igual que E2, para los destinos | Corregido: dos enganches (tramo y posición) o accesos reales; un destino solo cuenta si se llega a un enganche por trozos permitidos |
 | E4 | Los parques contaban como un punto (centroide) | Un parque grande se «alcanzaba» solo al llegar a su centro | Corregido: los accesos son los cruces de los caminos con el borde, o los `entrance=*` y puertas etiquetados a menos de 60 m |
-| E5 | No había un proceso de generación reproducible | No se podían auditar fuentes, fechas ni parámetros | Corregido: `build/` (Node ≥ 18 o navegador), con informes en `data/<lugar>/audit/` |
+| E5 | No había un proceso de generación reproducible | No se podían auditar fuentes, fechas ni parámetros | Corregido: `cli.mjs` y módulos `*.mjs` (Node ≥ 18 o navegador), con informes en `<lugar>-audit-*` |
 | E6 | Misma pendiente en los dos sentidos; para el tiempo, solo la cuerda | | Corregido: factores de tiempo de subida y de bajada por trozo |
 | E7 | Partir la red en trozos de pendiente duplicaba nodos y pesaba 5–7 MB | | Corregido: cada tramo lleva sus trozos (posición, pendiente, factores, calidad) y se puede llegar hasta el borde de un trozo bloqueado |
 
-## 3. Método de pendientes (`build/slopes.mjs`)
+## 3. Método de pendientes (`slopes.mjs`)
 
 **Fuente en Madrid.** `SPA_28079_SERVICIO_MDT_MOSAICO_2025` ([MDT_1m.zip](https://geoportal.madrid.es/fsdescargas/IDEAM_WBGEOPORTAL/ELEVACIONES/2025/MDT/MOSAICO/MDT_1m.zip), 1.516.568.778 bytes, `Last-Modified` 15/10/2025).
 
@@ -121,7 +121,7 @@ La referencia son consultas `GetFeatureInfo` al WMS `MDT_2025` cada 1 m. Es la m
 Notas:
 
 - El método da un máximo entre 0,1 y 0,6 puntos por encima del modelo de 10 cm. Es un sesgo conservador, documentado y no corregido.
-- Los valores de cada caso, con la vía de OSM y el error cuadrático medio entre el perfil de 2 m y el de 10 cm (2 a 15 cm), están en `data/madrid/audit/slope_cases.csv`.
+- Los valores de cada caso, con la vía de OSM y el error cuadrático medio entre el perfil de 2 m y el de 10 cm (2 a 15 cm), están en `madrid-audit-slope_cases.csv`.
 
 ### 4.2 MDT 2025 del Ayuntamiento frente al MDT05 del IGN [independiente]
 
@@ -133,7 +133,7 @@ Cerca de Madrid Río hay sendas cortas con pendientes de más del 12 %. Pueden s
 
 ## 5. Validación del cálculo en la página (`core.js`)
 
-**`build/test/test_core.mjs`** comprueba, sobre los datos reales:
+**`test_core.mjs`** comprueba, sobre los datos reales:
 
 - **[consistencia]** Monotonía:
   - más tiempo o más velocidad nunca reducen el alcance (km ni destinos);
@@ -149,13 +149,13 @@ Resultados:
 - Madrid (Sol, Vistillas, Salamanca y Madrid Río): **187 de 187 comprobaciones correctas**.
 - Navalcarnero (Plaza de Segovia y dos puntos más): **129 de 129**.
 
-**`build/test/test_build.mjs`** es una prueba de principio a fin con un extracto pequeño (Andorra) y un terreno sintético (plano al 5 % con un muro de 3 m) **[consistencia]**. Comprueba que:
+**`test_build.mjs`** es una prueba de principio a fin con un extracto pequeño (Andorra) y un terreno sintético (plano al 5 % con un muro de 3 m) **[consistencia]**. Comprueba que:
 
 - la geometría sola reproduce exactamente los puntos de muestreo;
 - el códec de alturas tiene un error máximo de 5 mm;
 - la suma de trozos es exacta.
 
-**`build/test/scenarios.mjs`** repite los escenarios medidos en la v5: los mismos puntos y ajustes, 15 minutos, referencia a 1,4 m/s. Las cifras de la v5 están en `build/test/scenarios_v5.json`.
+**`scenarios.mjs`** repite los escenarios medidos en la v5: los mismos puntos y ajustes, 15 minutos, referencia a 1,4 m/s. Las cifras de la v5 están en `scenarios_v5.json`.
 
 | Lugar | Ajustes | v5 | Ahora |
 |---|---|---|---|
@@ -217,7 +217,7 @@ La página lo advierte y oculta el bloque de estaciones. Los recuentos de servic
 
 - **Montaje.** Se descargó el MDT05 de una zona de 5 × 5 km del centro (UTM 437.500–442.500 E, 4.471.000–4.476.000 N) y se midieron las pendientes de los 715,6 km de tramos de su interior. La referencia es el MDT 2025 municipal, sin los trozos inciertos.
 - **Método elegido.**
-  1. Reconstrucción por bandas (`build/terrain.mjs`):
+  1. Reconstrucción por bandas (`terrain.mjs`):
      - cada celda pertenece a la banda `round(z)`;
      - la curva k + 0,5 pasa entre bandas;
      - dentro de cada banda la altura se interpola según la distancia euclídea a la curva de debajo y a la de encima;
@@ -248,7 +248,7 @@ Km por clase en la zona, MDT municipal (30 m) frente a MDT05 reconstruido (30 m)
 
 - **Sin mezcla.** Reconstruir también donde las curvas están cerca da lo mismo en la zona de contraste: 75,5 % de clase exacta y 1,6 puntos de error medio.
 - **Suavizado.** Con un suavizado gaussiano en lugar de la reconstrucción (probado en ventanas de 10 m), el filtro deja pasar más cuestas: con σ = 10 m no bloquea 86 de los 146 km que bloquea la referencia.
-- **Prueba sintética.** `build/test/test_terrain.mjs` usa laderas de pendiente conocida redondeadas a metros enteros **[consistencia]**:
+- **Prueba sintética.** `test_terrain.mjs` usa laderas de pendiente conocida redondeadas a metros enteros **[consistencia]**:
   - con un 3 %, el error máximo en 10 m baja de 7 puntos a 0,3;
   - con un 10 %, las terrazas son cortas, se conserva el valor original y el error no cambia.
 
@@ -286,7 +286,7 @@ Km por clase en la zona, MDT municipal (30 m) frente a MDT05 reconstruido (30 m)
 
 ## 7. Servicios
 
-- **Etiquetas** por categoría (`build/osm_build.mjs`, `RULES`); se aplica la primera regla que coincide:
+- **Etiquetas** por categoría (`osm_build.mjs`, `RULES`); se aplica la primera regla que coincide:
   - Alimentación: `shop=supermarket|convenience|greengrocer|bakery|butcher`.
   - «Farmacias, consultas y hospitales»: `amenity=pharmacy|doctors|clinic|hospital|dentist`.
   - «Colegios, escuelas infantiles y bibliotecas»: `amenity=school|kindergarten|library`.
@@ -311,13 +311,13 @@ Km por clase en la zona, MDT municipal (30 m) frente a MDT05 reconstruido (30 m)
 ## 8. Reproducir
 
 ```
-node build/cli.mjs --city madrid --pbf madrid-261006.osm.pbf --out .
-node build/cli.mjs --city navalcarnero --pbf madrid-261001.osm.pbf --out .
-node build/test/test_core.mjs data/madrid 40.4169,-3.7035 40.4121,-3.7140
-node build/test/scenarios.mjs data/madrid build/test/scenarios.json build/test/scenarios_v5.json
+node cli.mjs --city madrid --pbf madrid-261006.osm.pbf --out .
+node cli.mjs --city navalcarnero --pbf madrid-261001.osm.pbf --out .
+node test_core.mjs madrid 40.4169,-3.7035 40.4121,-3.7140
+node scenarios.mjs madrid scenarios.json scenarios_v5.json
 ```
 
-- **Extracto de Madrid**: `madrid-261006.osm.pbf` era un fichero diario y Geofabrik ya lo ha borrado. Quedan documentados su md5 (`ad4f40446f40f6ec7e279eb90215d133`) y su sha256 en `data/madrid/audit/build_report.json`.
+- **Extracto de Madrid**: `madrid-261006.osm.pbf` era un fichero diario y Geofabrik ya lo ha borrado. Quedan documentados su md5 (`ad4f40446f40f6ec7e279eb90215d133`) y su sha256 en `madrid-audit-build_report.json`.
   - Para regenerar exactamente hace falta una copia de ese fichero.
   - Con otro extracto los resultados cambiarán un poco.
 - **Cómo se generó**: los datos se generaron en un navegador, porque el entorno de trabajo no tenía acceso directo a esos servidores. Primero la etapa OSM y el muestreo del terreno, con el mismo código empaquetado; después la etapa 3 en Node. El código es el mismo en los dos entornos.

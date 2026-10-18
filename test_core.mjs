@@ -1,5 +1,5 @@
 // Pruebas del núcleo de la página (core.js) sobre los datos generados:
-//   node build/test/test_core.mjs data/madrid 40.4169,-3.7035 40.4121,-3.7140 …
+//   node test_core.mjs madrid 40.4169,-3.7035 40.4121,-3.7140 …   (lee madrid-graph.bin.gz y madrid-pois.json.gz)
 // 1. Los trozos de cada tramo suman su longitud.
 // 2. Monotonía: más tiempo o más velocidad nunca reducen el alcance; relajar el umbral de pendiente nunca lo
 //    reduce; añadir restricciones nunca lo amplía (km y conjunto de destinos).
@@ -9,13 +9,13 @@
 import { readFileSync } from "node:fs";
 import { gunzipSync } from "node:zlib";
 import { createRequire } from "node:module";
-const Core = createRequire(import.meta.url)("../../core.js");
+const Core = createRequire(import.meta.url)("./core.js");
 
-const dir = process.argv[2] || "data/madrid";
+const city = process.argv[2] || "madrid", here = new URL(".", import.meta.url).pathname, file = f => here + city + "-" + f;
 const places = process.argv.slice(3).map(s => s.split(",").map(Number));
-const G = Core.parseGraph(new Uint8Array(gunzipSync(readFileSync(dir + "/graph.bin.gz"))));
+const G = Core.parseGraph(new Uint8Array(gunzipSync(readFileSync(file("graph.bin.gz")))));
 const EG = Core.buildEdgeGrid(G);
-const P = Core.parsePois(JSON.parse(gunzipSync(readFileSync(dir + "/pois.json.gz")).toString()));
+const P = Core.parsePois(JSON.parse(gunzipSync(readFileSync(file("pois.json.gz"))).toString()));
 let fails = 0, checks = 0;
 const ok = (cond, msg) => { checks++; if (!cond) { fails++; console.log("FALLO:", msg); } };
 

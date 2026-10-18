@@ -1,0 +1,14 @@
+cat,sub,rule,node,way,relation,polygon,dropped_duplicate,dropped_station,kept
+education,school,amenity=school,3,8,0,8,0,0,11
+education,kindergarten,amenity=kindergarten,7,0,0,0,0,0,7
+bus,bus_stop,highway=bus_stop,78,0,0,0,0,0,78
+grocery,supermarket,shop=supermarket,3,5,0,5,0,0,8
+eating,restaurant,amenity=restaurant,8,0,0,0,0,0,8
+grocery,convenience,shop=convenience,3,0,0,0,0,0,3
+green,playground,leisure=playground,1,4,0,4,0,0,5
+grocery,greengrocer,shop=greengrocer,1,0,0,0,0,0,1
+health,pharmacy,amenity=pharmacy,1,0,0,0,0,0,1
+eating,bar,amenity=bar,1,0,0,0,0,0,1
+eating,cafe,amenity=cafe,3,0,0,0,0,0,3
+green,park,leisure=park,0,30,1,31,0,0,31
+green,garden,leisure=garden,0,5,0,5,0,0,5

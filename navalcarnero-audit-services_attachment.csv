@@ -1,0 +1,14 @@
+cat,sub,entrances,snap,none,snap_p50_m,snap_gt50
+education,school,1,10,0,5.7,0
+education,kindergarten,0,7,0,11.6,0
+bus,bus_stop,0,78,0,5,0
+grocery,supermarket,0,8,0,15.2,0
+eating,restaurant,0,8,0,14.8,0
+grocery,convenience,0,3,0,7.8,0
+green,playground,0,5,0,6.9,0
+grocery,greengrocer,0,1,0,0.5,0
+health,pharmacy,0,1,0,7.1,0
+eating,bar,0,1,0,7.7,0
+eating,cafe,0,3,0,12,0
+green,park,7,24,0,4.3,0
+green,garden,0,5,0,5.7,0
