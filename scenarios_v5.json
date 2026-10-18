@@ -1,0 +1,122 @@
+{
+ "sol/A_1.4": {
+  "km_adj": 153,
+  "km_ref": 153,
+  "hash": "#lat=40.41690&lng=-3.70350&min=15&spd=1.40&st=0&cu=0&pm=0&z=15&lang=es"
+ },
+ "sol/B_1.1": {
+  "km_adj": 89.8,
+  "km_ref": 153,
+  "hash": "#lat=40.41690&lng=-3.70350&min=15&spd=1.10&st=0&cu=0&pm=0&z=15&lang=es"
+ },
+ "sol/C_1.1_sinescaleras": {
+  "km_adj": 87.3,
+  "km_ref": 153,
+  "hash": "#lat=40.41690&lng=-3.70350&min=15&spd=1.10&st=1&cu=0&pm=0&z=15&lang=es"
+ },
+ "sol/D_1.1_sinescaleras_6": {
+  "km_adj": 68.3,
+  "km_ref": 153,
+  "hash": "#lat=40.41690&lng=-3.70350&min=15&spd=1.10&st=1&cu=0&pm=6&z=15&lang=es"
+ },
+ "sol/E_1.1_sinescaleras_cuestas_6": {
+  "km_adj": 65.3,
+  "km_ref": 153,
+  "hash": "#lat=40.41690&lng=-3.70350&min=15&spd=1.10&st=1&cu=1&pm=6&z=15&lang=es"
+ },
+ "sol/F_1.4_cuestas": {
+  "km_adj": 142.9,
+  "km_ref": 153,
+  "hash": "#lat=40.41690&lng=-3.70350&min=15&spd=1.40&st=0&cu=1&pm=0&z=15&lang=es"
+ },
+ "vistillas/A_1.4": {
+  "km_adj": 132,
+  "km_ref": 132,
+  "hash": "#lat=40.41210&lng=-3.71400&min=15&spd=1.40&st=0&cu=0&pm=0&z=15&lang=es"
+ },
+ "vistillas/B_1.1": {
+  "km_adj": 77.9,
+  "km_ref": 132,
+  "hash": "#lat=40.41210&lng=-3.71400&min=15&spd=1.10&st=0&cu=0&pm=0&z=15&lang=es"
+ },
+ "vistillas/C_1.1_sinescaleras": {
+  "km_adj": 62.2,
+  "km_ref": 132,
+  "hash": "#lat=40.41210&lng=-3.71400&min=15&spd=1.10&st=1&cu=0&pm=0&z=15&lang=es"
+ },
+ "vistillas/D_1.1_sinescaleras_6": {
+  "km_adj": 35.6,
+  "km_ref": 132,
+  "hash": "#lat=40.41210&lng=-3.71400&min=15&spd=1.10&st=1&cu=0&pm=6&z=15&lang=es"
+ },
+ "vistillas/E_1.1_sinescaleras_cuestas_6": {
+  "km_adj": 33.9,
+  "km_ref": 132,
+  "hash": "#lat=40.41210&lng=-3.71400&min=15&spd=1.10&st=1&cu=1&pm=6&z=15&lang=es"
+ },
+ "vistillas/F_1.4_cuestas": {
+  "km_adj": 122.8,
+  "km_ref": 132,
+  "hash": "#lat=40.41210&lng=-3.71400&min=15&spd=1.40&st=0&cu=1&pm=0&z=15&lang=es"
+ },
+ "salamanca/A_1.4": {
+  "km_adj": 138.9,
+  "km_ref": 138.9,
+  "hash": "#lat=40.42530&lng=-3.68370&min=15&spd=1.40&st=0&cu=0&pm=0&z=15&lang=es"
+ },
+ "salamanca/B_1.1": {
+  "km_adj": 87.4,
+  "km_ref": 138.9,
+  "hash": "#lat=40.42530&lng=-3.68370&min=15&spd=1.10&st=0&cu=0&pm=0&z=15&lang=es"
+ },
+ "salamanca/C_1.1_sinescaleras": {
+  "km_adj": 85.8,
+  "km_ref": 138.9,
+  "hash": "#lat=40.42530&lng=-3.68370&min=15&spd=1.10&st=1&cu=0&pm=0&z=15&lang=es"
+ },
+ "salamanca/D_1.1_sinescaleras_6": {
+  "km_adj": 83.6,
+  "km_ref": 138.9,
+  "hash": "#lat=40.42530&lng=-3.68370&min=15&spd=1.10&st=1&cu=0&pm=6&z=15&lang=es"
+ },
+ "salamanca/E_1.1_sinescaleras_cuestas_6": {
+  "km_adj": 78,
+  "km_ref": 138.9,
+  "hash": "#lat=40.42530&lng=-3.68370&min=15&spd=1.10&st=1&cu=1&pm=6&z=15&lang=es"
+ },
+ "salamanca/F_1.4_cuestas": {
+  "km_adj": 130.5,
+  "km_ref": 138.9,
+  "hash": "#lat=40.42530&lng=-3.68370&min=15&spd=1.40&st=0&cu=1&pm=0&z=15&lang=es"
+ },
+ "madrid_rio/A_1.4": {
+  "km_adj": 101.2,
+  "km_ref": 101.2,
+  "hash": "#lat=40.40200&lng=-3.71860&min=15&spd=1.40&st=0&cu=0&pm=0&z=15&lang=es"
+ },
+ "madrid_rio/B_1.1": {
+  "km_adj": 54.4,
+  "km_ref": 101.2,
+  "hash": "#lat=40.40200&lng=-3.71860&min=15&spd=1.10&st=0&cu=0&pm=0&z=15&lang=es"
+ },
+ "madrid_rio/C_1.1_sinescaleras": {
+  "km_adj": 51.7,
+  "km_ref": 101.2,
+  "hash": "#lat=40.40200&lng=-3.71860&min=15&spd=1.10&st=1&cu=0&pm=0&z=15&lang=es"
+ },
+ "madrid_rio/D_1.1_sinescaleras_6": {
+  "km_adj": 31.1,
+  "km_ref": 101.2,
+  "hash": "#lat=40.40200&lng=-3.71860&min=15&spd=1.10&st=1&cu=0&pm=6&z=15&lang=es"
+ },
+ "madrid_rio/E_1.1_sinescaleras_cuestas_6": {
+  "km_adj": 29.8,
+  "km_ref": 101.2,
+  "hash": "#lat=40.40200&lng=-3.71860&min=15&spd=1.10&st=1&cu=1&pm=6&z=15&lang=es"
+ },
+ "madrid_rio/F_1.4_cuestas": {
+  "km_adj": 85.8,
+  "km_ref": 101.2,
+  "hash": "#lat=40.40200&lng=-3.71860&min=15&spd=1.40&st=0&cu=1&pm=0&z=15&lang=es"
+ }
+}

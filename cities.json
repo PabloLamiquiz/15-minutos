@@ -1,0 +1,26 @@
+{
+ "cities": [
+  {
+   "id": "madrid",
+   "name": "Madrid",
+   "start": "Puerta del Sol",
+   "center": [
+    40.4169,
+    -3.7035
+   ],
+   "zoom": 15,
+   "radius_km": 7
+  },
+  {
+   "id": "navalcarnero",
+   "name": "Navalcarnero",
+   "start": "Plaza de Segovia",
+   "center": [
+    40.28763,
+    -4.01426
+   ],
+   "zoom": 15,
+   "radius_km": 5
+  }
+ ]
+}

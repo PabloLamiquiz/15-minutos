@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>15 minutos. ¿Para quién?</title>
+<meta name="description" content="Mapa interactivo de Madrid y Navalcarnero: hasta dónde llegas andando en 15 minutos según tu velocidad, si puedes usar escaleras y las cuestas. Los mismos 15 minutos no significan lo mismo para todo el mundo.">
+<meta name="theme-color" content="#1d6f8c">
+<!-- Vista previa al compartir (LinkedIn, WhatsApp, X…). og:image tiene que ser una dirección completa. -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="15 minutos. ¿Para quién? · Madrid y Navalcarnero">
+<meta property="og:description" content="Los mismos 15 minutos a pie no llegan igual de lejos para todos. Cambia la velocidad, evita escaleras y cuestas y mira qué queda a tu alcance en Madrid o en Navalcarnero.">
+<meta property="og:image" content="https://pablolamiquiz.github.io/15-minutos/og.png">
+<meta property="og:url" content="https://pablolamiquiz.github.io/15-minutos/">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="es_ES">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚶</text></svg>">
+<link rel="stylesheet" href="vendor/leaflet.css">
+<style>
+  /* tipografías alojadas aquí mismo (licencia OFL), sin llamadas a Google Fonts */
+  @font-face { font-family: "Fraunces"; font-style: normal; font-weight: 700; font-display: swap; src: url(vendor/fonts/fraunces-latin-700-normal.woff2) format("woff2"); }
+  @font-face { font-family: "Fraunces"; font-style: italic; font-weight: 500; font-display: swap; src: url(vendor/fonts/fraunces-latin-500-italic.woff2) format("woff2"); }
+  @font-face { font-family: "Public Sans"; font-style: normal; font-weight: 400; font-display: swap; src: url(vendor/fonts/public-sans-latin-400-normal.woff2) format("woff2"); }
+  @font-face { font-family: "Public Sans"; font-style: italic; font-weight: 400; font-display: swap; src: url(vendor/fonts/public-sans-latin-400-italic.woff2) format("woff2"); }
+  @font-face { font-family: "Public Sans"; font-style: normal; font-weight: 600; font-display: swap; src: url(vendor/fonts/public-sans-latin-600-normal.woff2) format("woff2"); }
+  :root {
+    --ink:#16191d; --muted:#565d64; --paper:#f4f3ef; --panel:#fbfaf7; --line:#dedad1; --teal:#1d6f8c; --err:#a8261d; --field:#ffffff;
+    --map-bg:#ecebe6; --map-street:#ffffff; --map-street-edge:#d3d0c7; --map-major:#fff6dc; --map-major-edge:#d9c99a;
+    --map-park:#d3e5c6; --map-water:#b9d6e6; --map-rail:#9a9a9a; --map-motor:#e9c58f; --map-label:#3e444a; --map-park-label:#3d6b35; --map-halo:rgba(255,255,255,.85);
+    --ref:rgba(70,74,80,.45);
+    --f-display: "Fraunces", Georgia, serif; --f-body: "Public Sans", -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    color-scheme: light;
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; }
+  body { display: flex; background: var(--paper); color: var(--ink); font-family: var(--f-body); font-size: 14px; }
+  #panel { width: 370px; flex: none; padding: 20px 20px 24px; background: var(--panel); border-right: 1px solid var(--line); overflow-y: auto; z-index: 2; display: flex; flex-direction: column; gap: 14px; }
+  .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+  h1 { font-family: var(--f-display); font-weight: 700; font-size: 34px; line-height: 1; margin: 0; letter-spacing: -.01em; }
+  h1 em { color: var(--teal); font-style: italic; font-weight: 500; }
+  h1 small { display: block; font-family: var(--f-body); font-size: 13px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-top: 8px; }
+  .lang { display: flex; border: 1px solid var(--line); border-radius: 2px; overflow: hidden; flex: none; }
+  .lang button { border: 0; background: transparent; color: var(--muted); font: 600 12px var(--f-body); padding: 5px 8px; cursor: pointer; }
+  .lang button[aria-pressed="true"] { background: var(--teal); color: var(--panel); }
+  .note { font-size: 12px; line-height: 1.5; color: var(--muted); margin: 0; }
+  .ctl label { display: block; }
+  .ctl input[type=range] { width: 100%; margin: 6px 0 0; accent-color: var(--teal); }
+  .row { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+  .val { font-variant-numeric: tabular-nums; font-weight: 600; }
+  .checks { display: grid; gap: 4px; }
+  .checks label { display: flex; gap: 8px; align-items: center; cursor: pointer; }
+  .checks label.sub { padding-left: 24px; }
+  input[type=checkbox] { accent-color: var(--teal); width: 16px; height: 16px; margin: 0; flex: none; }
+  #legend { height: 8px; margin-top: 6px; }
+  #legendLabels { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+  td { padding: 4px 0; border-bottom: 1px solid var(--line); }
+  td:not(:first-child) { text-align: right; white-space: nowrap; }
+  td.ref { color: var(--muted); width: 4.5em; }
+  .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 7px; vertical-align: -1px; }
+  .dot.st { width: 12px; height: 12px; border: 2px solid #15171a; vertical-align: -2px; }
+  .big { font-size: 15px; margin: 0 0 10px; }
+  .big b { font-size: 22px; font-family: var(--f-display); }
+  h2 { font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin: 0 0 4px; font-weight: 600; }
+  #status { font-size: 13px; min-height: 1.4em; }
+  #status:empty { display: none; }
+  #status.err { color: var(--err); }
+  #status.busy::before { content: ""; display: inline-block; width: 10px; height: 10px; margin-right: 7px; border: 2px solid var(--teal); border-right-color: transparent; border-radius: 50%; animation: spin .8s linear infinite; vertical-align: -1px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) { #status.busy::before { animation: none; } }
+  /* buscador */
+  .search { position: relative; display: flex; gap: 6px; }
+  .place select { width: 100%; margin-top: 6px; font: inherit; padding: 7px 8px; border: 1px solid var(--line); border-radius: 2px; background: var(--field); color: var(--ink); }
+  .place select:focus { outline: 2px solid var(--teal); outline-offset: -1px; }
+  .search input { flex: 1; min-width: 0; font: inherit; padding: 8px 10px; border: 1px solid var(--line); border-radius: 2px; background: var(--field); color: var(--ink); }
+  .search input:focus { outline: 2px solid var(--teal); outline-offset: -1px; }
+  .btn { font: 600 13px var(--f-body); padding: 7px 10px; border: 1px solid var(--line); border-radius: 2px; background: var(--field); color: var(--ink); cursor: pointer; white-space: nowrap; }
+  .btn:hover { border-color: var(--teal); }
+  .btn.primary { background: var(--teal); border-color: var(--teal); color: var(--panel); }
+  #results { position: absolute; top: calc(100% + 4px); left: 0; right: 0; margin: 0; padding: 4px 0; list-style: none; background: var(--field); border: 1px solid var(--line); border-radius: 2px; box-shadow: 0 6px 20px rgba(0,0,0,.15); z-index: 1001; max-height: 280px; overflow-y: auto; }
+  #results li { padding: 7px 10px; cursor: pointer; display: flex; justify-content: space-between; gap: 8px; }
+  #results li[aria-selected="true"], #results li:hover { background: var(--paper); }
+  #results li small { color: var(--muted); flex: none; }
+  .actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  details { border-top: 1px solid var(--line); padding-top: 10px; }
+  details.inline { border-top: 0; padding-top: 4px; }
+  summary { cursor: pointer; font-weight: 600; }
+  details p { font-size: 12px; line-height: 1.55; color: var(--muted); margin: 8px 0 0; }
+  details.inline summary { font-weight: 400; font-size: 12px; color: var(--muted); }
+  details.inline table { font-size: 12px; margin-top: 4px; }
+  #map { flex: 1; min-width: 0; background: var(--map-bg); }
+  .leaflet-container { background: var(--map-bg); font-family: var(--f-body); }
+  .leaflet-control-attribution { background: var(--panel) !important; color: var(--muted) !important; font-size: 10px; }
+  .leaflet-control-attribution a { color: var(--teal) !important; }
+  .leaflet-bar, .leaflet-bar a, .leaflet-touch .leaflet-bar a:first-child, .leaflet-touch .leaflet-bar a:last-child, .leaflet-bar a:first-child, .leaflet-bar a:last-child { border-radius: 2px !important; }
+  .leaflet-bar a { background: var(--panel); color: var(--ink); border-bottom-color: var(--line); }
+  .pin { width: 22px; height: 22px; border-radius: 50%; background: var(--teal); border: 3px solid #fff; box-shadow: 0 1px 4px rgba(0,0,0,.45); cursor: grab; }
+  a { color: var(--teal); }
+  :focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+  .pill { display: none; background: var(--panel); color: var(--ink); border: 1px solid var(--line); border-radius: 2px; padding: 6px 10px; font-size: 12px; line-height: 1.35; box-shadow: 0 1px 6px rgba(0,0,0,.25); font-variant-numeric: tabular-nums; }
+  .pill b { font-family: var(--f-display); font-size: 16px; }
+  .pill .d { color: var(--muted); }
+  .keyline { display: inline-block; width: 18px; height: 3px; background: #c1272d; flex: none; }
+  .keyline.steep { background: #7b3fa0; }
+  .keyline.unc { background: repeating-linear-gradient(90deg, #8a7f96 0 4px, transparent 4px 7px); }
+  .checks input[type=range] { width: 100%; margin: 2px 0 0; accent-color: var(--teal); }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  @media (max-width: 760px) {
+    body { flex-direction: column-reverse; height: 100dvh; }
+    #panel { width: auto; height: 48%; border-right: 0; border-top: 1px solid var(--line); padding: 14px 16px calc(16px + env(safe-area-inset-bottom)); gap: 12px; }
+    h1 { font-size: 24px; }
+    h1 small { margin-top: 4px; }
+    #results { max-height: 200px; }
+    .pill:not(:empty) { display: block; }
+  }
+</style>
+</head>
+<body>
+<div id="panel">
+  <div class="head">
+    <h1><span data-t="t_min">15 minutos.</span><br><em data-t="t_who">¿Para quién?</em><small id="cityTitle">Madrid</small></h1>
+    <div class="lang" role="group" aria-label="Idioma / Language">
+      <button type="button" data-lang="es" aria-pressed="true">ES</button><button type="button" data-lang="en" aria-pressed="false">EN</button>
+    </div>
+  </div>
+  <p class="note" id="intro"></p>
+
+  <div class="ctl place"><label for="city" data-t="place">Lugar</label>
+    <select id="city" disabled><option>Madrid</option></select>
+    <p class="note" id="cityNote" hidden style="margin-top:6px"></p></div>
+
+  <div class="search">
+    <label for="q" class="sr" data-t="search_label">Buscar</label>
+    <input id="q" type="search" autocomplete="off" spellcheck="false" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="results" disabled>
+    <button type="button" class="btn" id="locate" data-t="locate" disabled>Mi ubicación</button>
+    <ul id="results" role="listbox" hidden></ul>
+  </div>
+
+  <div class="ctl"><label for="minutes"><span class="row"><span data-t="time">Tiempo</span><span class="val" id="minOut">15 min</span></span></label>
+    <input type="range" id="minutes" min="5" max="30" value="15"></div>
+
+  <div class="ctl"><label for="speed"><span class="row"><span data-t="speed">Velocidad al caminar</span><span class="val" id="spdOut"></span></span></label>
+    <input type="range" id="speed" min="0.8" max="1.8" step="0.05" value="1.4">
+    <p class="note" data-t-html="speed_note"></p></div>
+
+  <div class="checks">
+    <label><input type="checkbox" id="steps"> <span data-t="steps">Evitar escaleras</span></label>
+    <label><input type="checkbox" id="slope"> <span data-t="slope">Tener en cuenta las cuestas</span></label>
+    <label><input type="checkbox" id="avoidSteep"> <span id="steepLbl"></span></label>
+    <input type="range" id="maxGrade" min="4" max="12" step="2" value="6" aria-label="%">
+    <label class="sub"><input type="checkbox" id="uncBarrier"> <span data-t="unc_barrier">Tratar también como barrera los tramos con pendiente incierta</span></label>
+    <p class="note" data-t-html="slope_note"></p>
+  </div>
+
+  <div><div id="legend"></div><div id="legendLabels"><span>0 min</span><span id="legendEnd">15 min</span></div></div>
+
+  <div id="status" class="busy" role="status" aria-live="polite">Cargando el mapa…</div>
+  <div id="stats" aria-live="polite"></div>
+
+  <div class="actions">
+    <button type="button" class="btn primary" id="share" data-t="share">Compartir esta vista</button>
+    <span class="note" id="shareMsg" role="status"></span>
+  </div>
+
+  <div class="checks">
+    <h2 data-t="show">Mostrar en el mapa</h2>
+    <label><input type="checkbox" id="showAm" checked> <span data-t="show_am">Servicios</span></label>
+    <label><input type="checkbox" id="showSt" checked> <span data-t="show_st">Estaciones</span></label>
+    <label><input type="checkbox" id="showBus"> <span data-t="show_bus">Paradas de bus</span></label>
+    <label><input type="checkbox" id="showBn"> <span data-t="show_bn">Bancos</span></label>
+    <label><input type="checkbox" id="showSteps"> <span data-t="show_steps">Escaleras</span> <span class="keyline" aria-hidden="true"></span></label>
+    <label><input type="checkbox" id="showSteep"> <span id="showSteepLbl"></span> <span class="keyline steep" aria-hidden="true"></span></label>
+    <label><input type="checkbox" id="showUnc"> <span data-t="show_unc">Pendiente incierta</span> <span class="keyline unc" aria-hidden="true"></span></label>
+  </div>
+
+  <p class="note" id="limits"></p>
+
+  <details>
+    <summary data-t="about">Cómo funciona</summary>
+    <p data-t-html="about_1"></p>
+    <p data-t-html="about_2"></p>
+    <p data-t-html="about_slope"></p>
+    <p data-t-html="about_metro"></p>
+    <p data-t-html="about_3"></p>
+    <p id="codeLink" hidden></p>
+  </details>
+</div>
+<div id="map" role="application" aria-label="Mapa"></div>
+<noscript><p style="padding:20px">Esta página necesita JavaScript. / This page needs JavaScript.</p></noscript>
+
+<script src="vendor/leaflet.js"></script>
+<script src="core.js"></script>
+<script>
+"use strict";
+// ================= textos (ES / EN) =================
+const SUBS = {
+  es: { supermarket: "Supermercados", convenience: "Tiendas de alimentación", greengrocer: "Fruterías", bakery: "Panaderías", butcher: "Carnicerías",
+    pharmacy: "Farmacias", doctors: "Consultas médicas", clinic: "Clínicas", hospital: "Hospitales", dentist: "Dentistas",
+    school: "Colegios e institutos", kindergarten: "Escuelas infantiles", library: "Bibliotecas", park: "Parques", garden: "Jardines", playground: "Zonas infantiles",
+    cafe: "Cafés", restaurant: "Restaurantes", bar: "Bares", pub: "Pubs" },
+  en: { supermarket: "Supermarkets", convenience: "Convenience stores", greengrocer: "Greengrocers", bakery: "Bakeries", butcher: "Butchers",
+    pharmacy: "Pharmacies", doctors: "Doctors' practices", clinic: "Clinics", hospital: "Hospitals", dentist: "Dentists",
+    school: "Schools", kindergarten: "Nurseries", library: "Libraries", park: "Parks", garden: "Gardens", playground: "Playgrounds",
+    cafe: "Cafés", restaurant: "Restaurants", bar: "Bars", pub: "Pubs" },
+};
+const I18N = {
+  es: {
+    t_min: "15 minutos.", t_who: "¿Para quién?",
+    intro_click: "Haz clic en el mapa, arrastra el punto o busca una dirección.",
+    intro_touch: "Toca el mapa, arrastra el punto o busca una dirección.",
+    intro_rest: " En color, las calles que alcanzas a pie con tus ajustes; en gris, las que alcanzaría en el mismo tiempo alguien a 1,4 m/s que puede usar escaleras, sin contar las cuestas.",
+    search_label: "Buscar", search_ph: "Calle, estación o parque", locate: "Mi ubicación",
+    time: "Tiempo", speed: "Velocidad al caminar",
+    speed_note: 'De 0,8 a 1,8 m/s, el rango del metaestudio de <a href="https://www.mdpi.com/2818476" target="_blank" rel="noopener">Giannoulaki y Christoforou (2024)</a>.',
+    steps: "Evitar escaleras", slope: "Tener en cuenta las cuestas", avoid_steep: g => `Evitar cuestas de más del ${g} %`, show_steep: g => `Cuestas de más del ${g} %`,
+    unc_barrier: "Tratar también como barrera los tramos con pendiente incierta",
+    slope_note: c => `Con las cuestas, el tiempo de cada tramo sale de su perfil cada 2 m en el sentido de la marcha (función de Tobler): subir un 5 % es un 16 % más lento y un 10 %, un 30 %. El filtro quita los tramos cuya pendiente, medida en ${c.win} m, supera el umbral. El 6 % es el límite general de un itinerario peatonal accesible (Orden TMA/851/2021), que admite rampas más empinadas en ciertas condiciones: el filtro no certifica la accesibilidad de ninguna calle.`,
+    about_slope: c => (c.dem === "ign" ? 'Las pendientes salen del modelo digital del terreno MDT05 del <a href="https://www.ign.es" target="_blank" rel="noopener">IGN</a> (malla de 5 m, CC BY 4.0 scne.es). Ese modelo tiene «escalones» de 1 m (alturas que se quedan en metros enteros y saltan de golpe), así que antes se reconstruye la superficie entre sus curvas de nivel; aun así no tiene detalle para rampas cortas y la pendiente de barrera se mide en ' + c.win + ' m. El terreno se muestrea' : 'Las pendientes salen del Modelo Digital del Terreno 2025 del <a href="https://geoportal.madrid.es" target="_blank" rel="noopener">Ayuntamiento de Madrid</a> (malla de 2 m), muestreado') + ' cada 2 m a lo largo de cada tramo. Se marcan como inciertos los tramos junto a muros o calles a otra cota (el terreno salta más de 0,5 m en 2 m o 1,5 m de un lado a otro) y los que no tienen dato; en puentes y túneles, también los que OpenStreetMap no etiqueta pero se reconocen en el perfil, no se usa el terreno sino la altura de sus extremos. La pendiente de un tramo puede no coincidir con la de la acera por la que se camina.',
+    about_metro: "En las estaciones de Metro se cuenta la llegada a cualquiera de sus bocas, no al centro de la estación. Si evitas escaleras, una estación solo cuenta como utilizable si está etiquetada como accesible y, si alguna de sus bocas lo está, si llegas a una de ellas.",
+    sty: ["", "Metro", "Cercanías", "Metro Ligero"], sty_short: ["", "M", "C", "ML"], share: "Compartir esta vista", copy: "Copiar enlace", copied: "Enlace copiado.", copy_fail: "Copia la dirección de la barra del navegador.",
+    show: "Mostrar en el mapa", show_am: "Servicios", show_st: "Estaciones", show_bus: "Paradas de bus", show_bn: "Bancos", show_steps: "Escaleras", show_unc: "Pendiente incierta",
+    cats: ["Alimentación", "Farmacias, consultas y hospitales", "Colegios, escuelas infantiles y bibliotecas", "Zonas verdes y de juego", "Cafés, bares y restaurantes", "Bancos", "Estaciones", "Paradas de bus"],
+    st_rows: ["Sin etiquetar", "Accesibles", "Acceso limitado", "No accesibles"],
+    green_rows: ["Parques y jardines ≥ 0,5 ha", "Zonas verdes < 0,5 ha", "Zonas infantiles", "Parques sin contorno", "Jardines sin contorno"],
+    loading: c => `Cargando el mapa de ${c.name}…`, preparing: "Preparando la red de calles…",
+    load_err: "No se pudieron cargar los datos del mapa ({e}). Recarga la página.",
+    place: "Lugar",
+    outside: c => `Ese punto queda fuera de la zona cubierta (${c.radius} km alrededor de ${c.start}) o a más de 300 m de cualquier calle o camino.`,
+    no_usable: "Con estos ajustes no hay ningún tramo utilizable a menos de 300 m de ese punto.",
+    moved: d => `El punto está junto a un tramo que no puedes usar con estos ajustes: se sale del tramo utilizable más cercano, a ${d} m.`,
+    locating: "Buscando tu ubicación…", loc_out: c => `Tu ubicación queda fuera de la zona cubierta (${c.radius} km alrededor de ${c.start}).`, loc_err: "No se pudo obtener tu ubicación.",
+    reach: "de red peatonal alcanzable", vs: "frente a", ref: "de referencia", of: "de",
+    reach_note: "Suma de los tramos de calle y camino a los que llegas; no es la distancia que recorres.",
+    unc_note: (a, b) => `${a} km de lo alcanzado tienen pendiente incierta y ${b} km son puentes o túneles con pendiente estimada.`,
+    amen_note: n => `${n} de 5 categorías presentes. Son elementos de OpenStreetMap, no un censo: faltan locales y se han quitado los duplicados evidentes. Las zonas verdes privadas no cuentan. El total lo dominan cafés y restaurantes, así que por sí solo no dice si una zona cubre lo básico.`,
+    st_usable: "utilizables sin escalones", pill_sf: "sin escalones",
+    amen_h: "Servicios al alcance", total: "Total de elementos", st_h: "Estaciones al alcance", detail: "Desglose por tipo",
+    st_avoid: () => "Las que no puedes usar sin escalones se ven atenuadas en el mapa.",
+    st_hint: "Marca «Evitar escaleras» para atenuar las estaciones no accesibles.",
+    figs: "La primera cifra usa tus ajustes; «de» es la referencia.",
+    kinds: ["estación", "parque", "calle"], no_results: "Sin resultados", pill_am: "servicios", pill_st: "estaciones", pill_st1: "estación",
+    limits: (d, c) => `No incluye transporte público, bordillos, anchura ni estado de las aceras, ni iluminación. Zona cubierta: ${c.radius} km alrededor de ${c.start}. Datos de OpenStreetMap del ${d}; pueden estar incompletos.${c.st ? " Una estación cuenta como accesible solo si está etiquetada wheelchair=yes." : ""}`,
+    city_note: { navalcarnero: "En Navalcarnero OpenStreetMap tiene muy pocos servicios mapeados (por ejemplo, una sola farmacia y ocho restaurantes) y casi ninguna escalera: los recuentos de servicios están muy por debajo de la realidad. La red de calles sí es representativa. Las cuestas salen del MDT05 del IGN (malla de 5 m), mucho menos detallado que el modelo de Madrid: la pendiente se mide en 30 m en vez de 10 m y, contrastada en Madrid con el modelo municipal, se equivoca de media en 1,6 puntos, así que el filtro de cuestas es solo orientativo." },
+    about: "Cómo funciona",
+    about_1: "Es una herramienta exploratoria para ver cómo cambia el acceso a pie según la velocidad y algunas barreras, no un estudio de accesibilidad. Todo se calcula en tu navegador: la red peatonal de cada lugar viaja con la página y el recorrido se calcula con el algoritmo de Dijkstra, sin servidor. Cada tramo cuesta su longitud dividida entre tu velocidad (y, con las cuestas, multiplicada por su factor de subida o bajada).",
+    about_2: "El punto de partida se proyecta sobre el tramo utilizable más cercano y desde ahí se recorre la red; cada servicio se engancha a los dos tramos más cercanos, o a sus accesos en parques y recintos, así que no se puede llegar «saltando» en línea recta un tramo bloqueado. «Evitar escaleras» solo excluye las escaleras mapeadas: no tiene en cuenta bordillos ni el estado de las aceras, así que no equivale a una ruta en silla de ruedas.",
+    about_3: 'Basado en <a href="https://github.com/martincantcode/15-minutes" target="_blank" rel="noopener">«15 minutes. For whom?»</a> de Martin Bangratz (MIT), en la idea de la ciudad de 15 minutos de Carlos Moreno. Datos © colaboradores de <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>, licencia ODbL. El método y su validación están en <code>AUDITORIA.md</code>.',
+    code: url => `Código y datos: <a href="${url}" target="_blank" rel="noopener">${url.replace("https://", "")}</a>`,
+    attrib: 'Datos © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>',
+    share_text: c => `¿Hasta dónde llegas andando en 15 minutos en ${c.name}? Depende de quién camine.`,
+    map_label: "Mapa de alcance a pie", pin_label: "Punto de partida",
+  },
+  en: {
+    t_min: "15 minutes.", t_who: "For whom?",
+    intro_click: "Click the map, drag the dot or search for a place.",
+    intro_touch: "Tap the map, drag the dot or search for a place.",
+    intro_rest: " Coloured streets are what you can reach on foot with your settings; grey streets are what someone at 1.4 m/s who can use stairs would reach in the same time, ignoring slopes.",
+    search_label: "Search", search_ph: "Street, station or park", locate: "My location",
+    time: "Time", speed: "Walking speed",
+    speed_note: 'From 0.8 to 1.8 m/s, the range in the meta-study by <a href="https://www.mdpi.com/2818476" target="_blank" rel="noopener">Giannoulaki &amp; Christoforou (2024)</a>.',
+    steps: "Avoid stairs", slope: "Take slopes into account", avoid_steep: g => `Avoid slopes steeper than ${g}%`, show_steep: g => `Slopes steeper than ${g}%`,
+    unc_barrier: "Also treat segments with uncertain slope as barriers",
+    slope_note: c => `With slopes on, each segment's time comes from its profile every 2 m in the direction of travel (Tobler's hiking function): a 5% climb is 16% slower and a 10% climb 30% slower. The filter removes segments whose slope, measured over ${c.win} m, exceeds the threshold. 6% is the general limit for an accessible pedestrian route under Spanish rules (Orden TMA/851/2021), which allow steeper ramps under certain conditions: the filter does not certify that any street is accessible.`,
+    about_slope: c => (c.dem === "ign" ? 'Slopes come from the MDT05 digital terrain model by <a href="https://www.ign.es" target="_blank" rel="noopener">IGN Spain</a> (5 m grid, CC BY 4.0 scne.es). That model has 1 m “steps” (heights that stay on whole metres and then jump), so the surface is first rebuilt between its contour lines; even so it lacks the detail for short ramps, and the barrier slope is measured over ' + c.win + ' m. The terrain is sampled' : 'Slopes come from the 2025 Digital Terrain Model of <a href="https://geoportal.madrid.es" target="_blank" rel="noopener">Madrid City Council</a> (2 m grid), sampled') + ' every 2 m along each segment. Segments next to walls or streets at another level (the ground jumps more than 0.5 m in 2 m, or 1.5 m from side to side) and segments without data are marked as uncertain; on bridges and in tunnels, including those OpenStreetMap does not tag but that show up in the profile, the terrain is not used, only the height of their ends. A segment’s slope may differ from that of the pavement people actually walk on.',
+    about_metro: "For Metro stations, reaching any of its entrances counts, not the centre of the station. When avoiding stairs, a station only counts as usable if it is tagged as accessible and, if any of its entrances is tagged as accessible, you reach one of those.",
+    sty: ["", "Metro", "Cercanías", "Metro Ligero"], sty_short: ["", "M", "C", "ML"], share: "Share this view", copy: "Copy link", copied: "Link copied.", copy_fail: "Copy the address from your browser's address bar.",
+    show: "Show on the map", show_am: "Amenities", show_st: "Stations", show_bus: "Bus stops", show_bn: "Benches", show_steps: "Stairs", show_unc: "Uncertain slope",
+    cats: ["Groceries", "Pharmacies, doctors & hospitals", "Schools, nurseries & libraries", "Green spaces & play", "Cafés, bars & restaurants", "Benches", "Stations", "Bus stops"],
+    st_rows: ["Not tagged", "Step-free", "Limited access", "Not step-free"],
+    green_rows: ["Parks & gardens ≥ 0.5 ha", "Green spaces < 0.5 ha", "Playgrounds", "Parks without outline", "Gardens without outline"],
+    loading: c => `Loading the map of ${c.name}…`, preparing: "Preparing the street network…",
+    load_err: "Could not load the map data ({e}). Please reload the page.",
+    place: "Place",
+    outside: c => `That point is outside the covered area (${c.radius} km around ${c.start}) or more than 300 m from any street or path.`,
+    no_usable: "With these settings there is no usable segment within 300 m of that point.",
+    moved: d => `The point is next to a segment you cannot use with these settings: the walk starts from the nearest usable segment, ${d} m away.`,
+    locating: "Finding your location…", loc_out: c => `Your location is outside the covered area (${c.radius} km around ${c.start}).`, loc_err: "Could not get your location.",
+    reach: "of walkable network within reach", vs: "vs.", ref: "reference", of: "of",
+    reach_note: "Sum of the street and path segments you can reach, not the distance you walk.",
+    unc_note: (a, b) => `${a} km of what you reach have an uncertain slope and ${b} km are bridges or tunnels with an estimated slope.`,
+    amen_note: n => `${n} of 5 categories present. These are OpenStreetMap items, not a census: some places are missing and obvious duplicates have been removed. Private green spaces do not count. Cafés and restaurants dominate the total, so on its own it does not tell whether an area covers the basics.`,
+    st_usable: "usable step-free", pill_sf: "step-free",
+    amen_h: "Amenities within reach", total: "Total items", st_h: "Stations within reach", detail: "Breakdown by type",
+    st_avoid: () => "Stations you cannot use step-free are faded on the map.",
+    st_hint: "Tick “Avoid stairs” to fade stations that are not step-free.",
+    figs: "The first number uses your settings; “of” is the reference.",
+    kinds: ["station", "park", "street"], no_results: "No results", pill_am: "amenities", pill_st: "stations", pill_st1: "station",
+    limits: (d, c) => `Not included: public transport, kerbs, pavement width or condition, lighting. Covered area: ${c.radius} km around ${c.start}. OpenStreetMap data from ${d}; may be incomplete.${c.st ? " A station counts as step-free only if tagged wheelchair=yes." : ""}`,
+    city_note: { navalcarnero: "In Navalcarnero very few amenities are mapped in OpenStreetMap (for example, a single pharmacy and eight restaurants) and almost no stairs: amenity counts are far below reality. The street network is representative. Slopes come from IGN's MDT05 (5 m grid), far less detailed than the Madrid model: slope is measured over 30 m instead of 10 m and, checked in Madrid against the city model, it is off by 1.6 points on average, so the slope filter is only indicative." },
+    about: "How it works",
+    about_1: "This is an exploratory tool to see how walking access changes with speed and some barriers, not an accessibility audit. Everything runs in your browser: each place's walking network ships with the page and reach is computed with Dijkstra's algorithm, no server involved. Each segment costs its length divided by your speed (and, with slopes on, multiplied by its uphill or downhill factor).",
+    about_2: "The starting point is projected onto the nearest usable segment and the walk follows the network from there; each amenity is attached to its two nearest segments, or to its entrances for parks and large sites, so nothing can be reached by “jumping” over a blocked segment in a straight line. “Avoid stairs” only removes mapped flights of steps: kerbs and pavement condition are not considered, so it is not a wheelchair route.",
+    about_3: 'Based on <a href="https://github.com/martincantcode/15-minutes" target="_blank" rel="noopener">“15 minutes. For whom?”</a> by Martin Bangratz (MIT), after Carlos Moreno’s 15-minute city. Data © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors, ODbL. Method and validation: <code>AUDITORIA.md</code>.',
+    code: url => `Code and data: <a href="${url}" target="_blank" rel="noopener">${url.replace("https://", "")}</a>`,
+    attrib: 'Data © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>',
+    share_text: c => `How far can you walk in 15 minutes in ${c.name}? It depends on who is walking.`,
+    map_label: "Walking reach map", pin_label: "Starting point",
+  }
+};
+const $ = id => document.getElementById(id);
+const qs = new URLSearchParams(location.hash.slice(1));
+let LANG = qs.get("lang") === "en" || qs.get("lang") === "es" ? qs.get("lang") : (/^en/i.test(navigator.language || "") ? "en" : "es");
+const t = k => I18N[LANG][k];
+const fmt = (v, d = 1) => LANG === "es" ? v.toFixed(d).replace(".", ",") : v.toFixed(d);
+const TOUCH = matchMedia("(pointer: coarse)").matches;
+let DATA_DATE = "";
+// lugares disponibles (data/cities.json) y datos ya cargados de cada uno
+let CITIES = [{ id: "madrid", name: "Madrid", start: "Puerta del Sol", radius_km: 7 }], CITY = "madrid";
+const CACHE = new Map();
+let HAS_ST = true;   // ¿hay estaciones en el lugar elegido?
+const cityInfo = () => { const c = CITIES.find(x => x.id === CITY) || CITIES[0]; return { radius: String(c.radius_km).replace(".", LANG === "es" ? "," : "."), start: c.start, name: c.name,
+  dem: X && X.dem && /IGN/.test(X.dem.name || "") ? "ign" : "madrid", win: X && X.slope && X.slope.window_m || 10, st: HAS_ST }; };
+const tc = k => { const v = t(k); return typeof v === "function" ? v(cityInfo()) : v; };
+
+const REF_SPEED = 1.4;
+const CAT_COLORS = ["#5b9a3c", "#d9534f", "#7b5ea7", "#2e8b57", "#e8a13a", "#8a5a2b", "#15171a", "#c2185b"];
+const STATION_COLORS = ["#aaaaaa", "#2e8b57", "#e8a13a", "#555555"];
+const PALETTE = ["#0b4f6c", "#1f9e9a", "#9bc53d", "#f2c14e", "#e8743b"];
+const { mercX, mercY } = Core;
+
+// recorte de la geometría de un tramo entre a y b metros desde u (en Mercator, para dibujar)
+function edgePath(g, e) {
+  const u = g.eu[e], v = g.ev[e], pts = [g.mx[u], g.my[u]];
+  for (let s = g.sst[e]; s < g.sst[e + 1]; s++) pts.push(g.smx[s], g.smy[s]);
+  pts.push(g.mx[v], g.my[v]); return pts;
+}
+function subPath(g, e, a, b) {
+  const pts = edgePath(g, e), L = g.elen[e];
+  if (a <= 0 && b >= L) return pts;
+  let total = 0; for (let i = 2; i < pts.length; i += 2) total += Math.hypot(pts[i] - pts[i - 2], pts[i + 1] - pts[i - 1]);
+  const fa = L > 0 ? a / L * total : 0, fb = L > 0 ? b / L * total : 0, out = [];
+  let acc = 0;
+  for (let i = 2; i < pts.length; i += 2) {
+    const x0 = pts[i - 2], y0 = pts[i - 1], x1 = pts[i], y1 = pts[i + 1], seg = Math.hypot(x1 - x0, y1 - y0);
+    const s0 = acc, s1 = acc + seg; acc = s1;
+    if (s1 < fa || s0 > fb) continue;
+    const p = s => { const f = seg > 0 ? (s - s0) / seg : 0; return [x0 + (x1 - x0) * f, y0 + (y1 - y0) * f]; };
+    if (!out.length) out.push(...p(Math.max(s0, fa)));
+    out.push(...p(Math.min(s1, fb)));
+  }
+  return out.length >= 4 ? out : null;
+}
+
+// ================= carga de datos (.gz binario, con barra de progreso) =================
+const progress = {};
+function showProgress() {
+  let got = 0, total = 0;
+  for (const k in progress) { got += progress[k][0]; total += progress[k][1]; }
+  const pct = total ? Math.min(99, Math.round(got / total * 100)) : 0;
+  setStatus(`${tc("loading")} ${pct ? pct + " %" : ""}`, "busy");
+}
+async function fetchBytes(url) {
+  const r = await fetch(url);
+  if (!r.ok) throw new Error(`${url} (${r.status})`);
+  const total = +r.headers.get("content-length") || 0;
+  if (!r.body || !r.body.getReader) return new Uint8Array(await r.arrayBuffer());
+  const reader = r.body.getReader(), chunks = []; let got = 0;
+  for (;;) {
+    const { done, value } = await reader.read(); if (done) break;
+    chunks.push(value); got += value.length; progress[url] = [got, total || got]; showProgress();
+  }
+  const out = new Uint8Array(got); let o = 0; for (const c of chunks) { out.set(c, o); o += c.length; }
+  return out;
+}
+function loadScript(src) { return new Promise((res, rej) => { const s = document.createElement("script"); s.src = src; s.onload = res; s.onerror = () => rej(new Error(src)); document.head.appendChild(s); }); }
+async function gunzip(u8) {
+  if (!(u8[0] === 0x1f && u8[1] === 0x8b)) return u8;   // el servidor ya lo descomprimió
+  if ("DecompressionStream" in window) {
+    try { return new Uint8Array(await new Response(new Blob([u8]).stream().pipeThrough(new DecompressionStream("gzip"))).arrayBuffer()); } catch (e) { /* sigue con fflate */ }
+  }
+  if (!window.fflate) await loadScript("vendor/fflate.min.js");
+  return window.fflate.gunzipSync(u8);
+}
+
+// ================= colores y tema =================
+function mix(c1, c2, f) { const a = parseInt(c1.slice(1), 16), b = parseInt(c2.slice(1), 16), ch = s => (a >> s & 255) + ((b >> s & 255) - (a >> s & 255)) * f; return `rgb(${ch(16) | 0},${ch(8) | 0},${ch(0) | 0})`; }
+function colorAt(x0) { const x = Math.min(0.9999, Math.max(0, x0)) * (PALETTE.length - 1), i = Math.floor(x); return mix(PALETTE[i], PALETTE[i + 1], x - i); }
+const NB = 12, BIN_COLORS = Array.from({ length: NB }, (_, i) => colorAt((i + 0.5) / NB));
+$("legend").style.background = `linear-gradient(to right, ${Array.from({ length: 11 }, (_, i) => colorAt(i / 10)).join(",")})`;
+const THEME = {};
+function readTheme() { const cs = getComputedStyle(document.documentElement); for (const k of ["map-bg", "map-street", "map-street-edge", "map-major", "map-major-edge", "map-park", "map-water", "map-rail", "map-motor", "map-label", "map-halo", "ref", "map-park-label"]) THEME[k] = cs.getPropertyValue("--" + k).trim(); }
+readTheme();
+
+// ================= mapa =================
+const START = L.latLng(40.4169, -3.7035);
+const map = L.map("map", { zoomControl: true, minZoom: 12, maxZoom: 19 }).setView(START, 15);
+map.attributionControl.setPrefix(false);
+const canvas = document.createElement("canvas");
+canvas.className = "leaflet-zoom-hide"; canvas.style.cssText = "position:absolute;pointer-events:none";
+map.getPanes().overlayPane.appendChild(canvas);
+const pinIcon = () => L.divIcon({ className: "", html: `<div class="pin" role="img" aria-label="${t("pin_label")}"></div>`, iconSize: [22, 22], iconAnchor: [11, 11] });
+let origin = START;
+const marker = L.marker(origin, { draggable: true, icon: pinIcon(), keyboard: false }).addTo(map);
+const Pill = L.Control.extend({ onAdd() { const d = L.DomUtil.create("div", "pill"); d.id = "pill"; d.setAttribute("aria-hidden", "true"); return d; } });
+new Pill({ position: "topright" }).addTo(map);
+
+let G = null, EG = null, X = null, POI = null, state = null, queued = false, fitNext = false, lastStatus = null;
+const statusEl = $("status");
+function setStatus(msg, cls = "") { statusEl.className = cls; statusEl.textContent = msg; }
+
+// ================= idioma =================
+function applyLang() {
+  document.documentElement.lang = LANG;
+  document.querySelectorAll("[data-t]").forEach(el => { el.textContent = t(el.dataset.t); });
+  document.querySelectorAll("[data-t-html]").forEach(el => { el.innerHTML = tc(el.dataset.tHtml); });
+  document.querySelectorAll(".lang button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.lang === LANG)));
+  $("intro").textContent = t(TOUCH ? "intro_touch" : "intro_click") + t("intro_rest");
+  $("q").placeholder = t("search_ph");
+  $("limits").textContent = t("limits")(DATA_DATE, cityInfo());
+  const ci = cityInfo(); $("cityTitle").textContent = ci.name; document.title = `${t("t_min")} ${t("t_who")} · ${ci.name}`;
+  const note = (t("city_note") || {})[CITY]; $("cityNote").hidden = !note; $("cityNote").textContent = note || "";
+  $("share").textContent = navigator.share ? t("share") : t("copy");
+  $("map").setAttribute("aria-label", t("map_label"));
+  if (map.attributionControl._attributions) { for (const k in map.attributionControl._attributions) map.attributionControl.removeAttribution(k); }
+  map.attributionControl.addAttribution(t("attrib"));
+  if (X && X.dem && X.dem.attribution) { const a = X.dem.attribution; map.attributionControl.addAttribution(`<a href="${a.url}" target="_blank" rel="noopener">${a[LANG] || a.es}</a>`); }
+  const gh = location.hostname.match(/^([^.]+)\.github\.io$/);
+  if (gh) { const repo = location.pathname.split("/").filter(Boolean)[0]; const url = `https://github.com/${gh[1]}${repo ? "/" + repo : ""}`; $("codeLink").innerHTML = t("code")(url); $("codeLink").hidden = false; }
+  marker.setIcon(pinIcon());
+  labels();
+  if (lastStatus) setStatus(typeof lastStatus[0] === "function" ? lastStatus[0]() : tc(lastStatus[0]), lastStatus[1]);
+  if (G) compute();
+}
+document.querySelectorAll(".lang button").forEach(b => b.addEventListener("click", () => { LANG = b.dataset.lang; applyLang(); writeHash(); }));
+
+function slopeLabels() {
+  const g = $("maxGrade").value;
+  $("steepLbl").textContent = t("avoid_steep")(g); $("showSteepLbl").textContent = t("show_steep")(g);
+  $("uncBarrier").disabled = !$("avoidSteep").checked;
+}
+function labels() {
+  slopeLabels();
+  $("minOut").textContent = $("minutes").value + " min";
+  $("legendEnd").textContent = $("minutes").value + " min";
+  const v = +$("speed").value;
+  $("spdOut").textContent = `${fmt(v, 2)} m/s · ${fmt(v * 3.6)} km/h`;
+}
+function schedule() { labels(); if (queued) return; queued = true; requestAnimationFrame(() => { queued = false; compute(); }); }
+
+// ================= cálculo =================
+function settings() {
+  return { speed: +$("speed").value, avoidSteps: $("steps").checked, slope: $("slope").checked,
+    maxGrade: $("avoidSteep").checked ? +$("maxGrade").value / 100 : 0, uncertainBarrier: $("avoidSteep").checked && $("uncBarrier").checked };
+}
+const REF = { speed: REF_SPEED, avoidSteps: false, slope: false, maxGrade: 0, uncertainBarrier: false };
+function compute() {
+  if (!G) return;
+  writeHash();
+  const T = $("minutes").value * 60, o = settings();
+  const rR = Core.solve(G, EG, origin.lng, origin.lat, REF, T);
+  const rA = rR && Core.solve(G, EG, origin.lng, origin.lat, o, T);
+  if (!rR || !rA) {
+    state = null; $("stats").innerHTML = ""; $("pill").innerHTML = "";
+    lastStatus = [rR ? "no_usable" : "outside", "err"]; setStatus(tc(lastStatus[0]), "err");
+    draw(); return;
+  }
+  if (rA.e !== rR.e && rA.d > rR.d + 1) { const d = Math.round(rA.d); lastStatus = [() => t("moved")(d), ""]; setStatus(t("moved")(d)); }
+  else if (lastStatus) { lastStatus = null; setStatus(""); }
+  const reachA = Core.collectReach(G, rA), reachR = Core.collectReach(G, rR);
+  const cA = Core.countReach(G, POI, rA, o.avoidSteps), cR = Core.countReach(G, POI, rR, false);
+  const isUnc = (e, p) => !(G.eflag[e] & 1) && ((G.pq[p] & Core.UNCERTAIN) || G.pgr[p] !== G.pgr[p]);
+  const unc = Core.overlapLength(G, reachA.items, isUnc);
+  const est = Core.overlapLength(G, reachA.items, (e, p) => !isUnc(e, p) && !(G.eflag[e] & 1) && (G.pq[p] & Core.Q.STRUCTURE));
+  state = { T, o, rA, rR, reachA, reachR, cA, cR, unc, est };
+  showStats();
+  if (fitNext) { fitNext = false; fitToReach(); }
+  draw();
+}
+function fitToReach() {
+  let s = Infinity, w = Infinity, nn = -Infinity, e = -Infinity;
+  for (const r of [state.reachR, state.reachA]) for (const it of r.items) for (const v of [G.eu[it.e], G.ev[it.e]]) {
+    if (G.lat[v] < s) s = G.lat[v]; if (G.lat[v] > nn) nn = G.lat[v]; if (G.lon[v] < w) w = G.lon[v]; if (G.lon[v] > e) e = G.lon[v];
+  }
+  if (s < nn) map.fitBounds([[s, w], [nn, e]], { padding: [16, 16], maxZoom: 17, animate: false });
+}
+function showStats() {
+  const { reachA: rA, reachR: rR, cA, cR, o } = state;
+  const km = m => fmt(m / 1000), pct = rR.lengthM > 0 ? Math.round((rA.lengthM / rR.lengthM - 1) * 100) : 0;
+  const cats = t("cats"), of = t("of"), amen = [0, 1, 2, 3, 4], esc = s => String(s).replace(/[&<>]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" })[c]);
+  const row = (c, label) => `<tr><td><span class="dot" style="background:${CAT_COLORS[c]}"></span>${label}</td><td>${cA.cat[c]}</td><td class="ref">${of} ${cR.cat[c]}</td></tr>`;
+  const totA = amen.reduce((s, c) => s + cA.cat[c], 0), totR = amen.reduce((s, c) => s + cR.cat[c], 0);
+  const stRows = [1, 2, 3, 0].map(code => `<tr><td><span class="dot st" style="background:${STATION_COLORS[code]}"></span>${t("st_rows")[code]}</td><td>${cA.st[code]}</td><td class="ref">${of} ${cR.st[code]}</td></tr>`).join("");
+  const subRows = [];
+  for (const c of amen) {
+    if (c === 3) { t("green_rows").forEach((lab, k) => { if (cR.green[k]) subRows.push(`<tr><td>${lab}</td><td>${cA.green[k]}</td><td class="ref">${of} ${cR.green[k]}</td></tr>`); }); continue; }
+    const subs = [...new Set([...cR.sub.keys()])].filter(s => POI.subs[s] && SUBS[LANG][POI.subs[s]] && POI.cats[catOfSub(s)] !== undefined && catOfSub(s) === c);
+    for (const s of subs) subRows.push(`<tr><td>${SUBS[LANG][POI.subs[s]]}</td><td>${cA.sub.get(s) || 0}</td><td class="ref">${of} ${cR.sub.get(s) || 0}</td></tr>`);
+  }
+  const sign = pct >= 0 ? "+" : "−";
+  const nf = new Intl.NumberFormat(LANG === "es" ? "es-ES" : "en-GB");
+  const slopeOn = o.slope || o.maxGrade > 0;
+  $("pill").innerHTML = `<b>${km(rA.lengthM)} km</b>${pct ? ` <span class="d">${sign}${Math.abs(pct)} %</span>` : ""}<br>${nf.format(totA)} ${t("pill_am")}${HAS_ST ? ` · ${cA.cat[6]} ${t(cA.cat[6] === 1 ? "pill_st1" : "pill_st")}${o.avoidSteps ? ` (${cA.stUsable} ${t("pill_sf")})` : ""}` : ""}`;
+  $("stats").innerHTML = `
+    <p class="big" style="margin-bottom:2px"><b>${km(rA.lengthM)} km</b> ${t("reach")} <span class="note">(${sign}${Math.abs(pct)} % ${t("vs")} ${km(rR.lengthM)} km ${t("ref")})</span></p>
+    <p class="note" style="margin:0 0 ${slopeOn ? 4 : 12}px">${t("reach_note")}</p>
+    ${slopeOn ? `<p class="note" style="margin:0 0 12px">${t("unc_note")(km(state.unc), km(state.est))}</p>` : ""}
+    <h2>${t("amen_h")}</h2>
+    <table>${amen.map(c => row(c, cats[c])).join("")}<tr><td><b>${t("total")}</b></td><td><b>${totA}</b></td><td class="ref">${of} ${totR}</td></tr>
+    ${row(5, cats[5])}${row(7, cats[7])}</table>
+    <details class="inline"><summary>${t("detail")}</summary><table>${subRows.join("")}</table></details>
+    <p class="note" style="margin-top:6px">${t("amen_note")(amen.filter(c => cA.cat[c] > 0).length)}</p>
+    ${HAS_ST ? `<h2 style="margin-top:14px">${t("st_h")}: ${cA.cat[6]} <span style="text-transform:none;letter-spacing:0">${of} ${cR.cat[6]}</span>${o.avoidSteps ? ` · ${t("st_usable")}: ${cA.stUsable}` : ""}</h2>
+    <p class="note" style="margin:0 0 4px">${[1, 2, 3].filter(k => cR.ty[k]).map(k => `${t("sty")[k]} ${cA.ty[k]} ${of} ${cR.ty[k]}`).join(" · ")}</p>
+    <table>${stRows}</table>
+    <p class="note" style="margin-top:6px">${o.avoidSteps ? t("st_avoid")() : t("st_hint")} ${t("figs")}</p>` : `<p class="note" style="margin-top:6px">${t("figs")}</p>`}`;
+}
+let SUBCAT = null;
+function catOfSub(s) {
+  if (!SUBCAT) { SUBCAT = new Map(); for (let i = 0; i < POI.n; i++) if (!SUBCAT.has(POI.sub[i])) SUBCAT.set(POI.sub[i], POI.cat[i]); }
+  return SUBCAT.get(s);
+}
+
+// ================= dibujo =================
+function draw() {
+  const size = map.getSize(), dpr = window.devicePixelRatio || 1;
+  canvas.width = size.x * dpr; canvas.height = size.y * dpr;
+  canvas.style.width = size.x + "px"; canvas.style.height = size.y + "px";
+  L.DomUtil.setPosition(canvas, map.containerPointToLayerPoint([0, 0]));
+  const ctx = canvas.getContext("2d");
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.clearRect(0, 0, size.x, size.y);
+  if (!G) return;
+  const z = map.getZoom(), S = 256 * Math.pow(2, z), tl = map.getPixelBounds().min;
+  const X_ = v => v * S - tl.x, Y_ = v => v * S - tl.y;
+  const vx0 = tl.x / S, vy0 = tl.y / S, vx1 = (tl.x + size.x) / S, vy1 = (tl.y + size.y) / S;
+  ctx.lineCap = "round"; ctx.lineJoin = "round";
+  const font = getComputedStyle(document.body).fontFamily;
+
+  const poly = (arr, color) => {
+    ctx.fillStyle = color; ctx.beginPath();
+    for (const r of arr) { if (r.x1 < vx0 || r.x0 > vx1 || r.y1 < vy0 || r.y0 > vy1) continue;
+      ctx.moveTo(X_(r.m[0]), Y_(r.m[1])); for (let i = 2; i < r.m.length; i += 2) ctx.lineTo(X_(r.m[i]), Y_(r.m[i + 1])); ctx.closePath(); }
+    ctx.fill();
+  };
+  poly(X.parks, THEME["map-park"]); poly(X.water, THEME["map-water"]);
+  for (const kind of [3, 2, 1]) {
+    ctx.beginPath();
+    for (let b = 0; b < G.nB; b++) { if (G.bk[b] !== kind) continue; const s = G.bst[b], e = G.bst[b + 1];
+      ctx.moveTo(X_(G.bmx[s]), Y_(G.bmy[s])); for (let i = s + 1; i < e; i++) ctx.lineTo(X_(G.bmx[i]), Y_(G.bmy[i])); }
+    if (kind === 3) { ctx.strokeStyle = THEME["map-water"]; ctx.lineWidth = Math.max(2, (z - 11) * 1.4); ctx.setLineDash([]); }
+    if (kind === 2) { ctx.strokeStyle = THEME["map-rail"]; ctx.lineWidth = 1.2; ctx.setLineDash([5, 4]); }
+    if (kind === 1) { ctx.strokeStyle = THEME["map-motor"]; ctx.lineWidth = Math.max(2, (z - 11) * 1.3); ctx.setLineDash([]); }
+    ctx.stroke();
+  }
+  ctx.setLineDash([]);
+  const pad = 40 / S, vis = Core.visibleEdges(EG, vx0 - pad, vy0 - pad, vx1 + pad, vy1 + pad), isVis = e => EG.stamp[e] === EG.gen;
+  const showMinor = z >= 14, wMinor = Math.max(1, (z - 13) * 1.6), wMajor = Math.max(1.6, (z - 12) * 1.9);
+  const tracePts = p => { if (!p) return; ctx.moveTo(X_(p[0]), Y_(p[1])); for (let i = 2; i < p.length; i += 2) ctx.lineTo(X_(p[i]), Y_(p[i + 1])); };
+  for (const pass of [0, 1]) for (const major of [0, 1]) {
+    if (!major && !showMinor) continue;
+    ctx.beginPath();
+    for (const e of vis) if (((G.eflag[e] >> 1) & 1) === major) tracePts(edgePath(G, e));
+    const w = major ? wMajor : wMinor;
+    ctx.strokeStyle = pass === 0 ? THEME[major ? "map-major-edge" : "map-street-edge"] : THEME[major ? "map-major" : "map-street"];
+    ctx.lineWidth = pass === 0 ? w + 1.5 : w; ctx.stroke();
+  }
+
+  if (state) {
+    const width = Math.max(2, Math.min(6, 1.6 + (z - 12) * 0.6));
+    const adj = new Map(state.reachA.items.map(it => [it.e, it]));
+    ctx.beginPath(); ctx.strokeStyle = THEME.ref; ctx.lineWidth = Math.max(1.5, width * 0.75);
+    for (const it of state.reachR.items) { if (!isVis(it.e)) continue; const a = adj.get(it.e); if (a && a.a <= it.a + 1e-6 && a.b >= it.b - 1e-6) continue; tracePts(subPath(G, it.e, it.a, it.b)); }
+    ctx.stroke();
+    const bins = Array.from({ length: NB }, () => []);
+    for (const it of state.reachA.items) if (isVis(it.e)) bins[Math.min(NB - 1, Math.floor(it.tt * NB))].push(it);
+    ctx.lineWidth = width;
+    bins.forEach((list, b) => { if (!list.length) return; ctx.beginPath(); ctx.strokeStyle = BIN_COLORS[b]; for (const it of list) tracePts(subPath(G, it.e, it.a, it.b)); ctx.stroke(); });
+
+    const inRef = state.reachR.items;
+    if ($("showSteep").checked) {
+      const lim = +$("maxGrade").value / 100;
+      ctx.beginPath(); ctx.strokeStyle = "#7b3fa0"; ctx.lineWidth = Math.max(2.5, width * 0.9);
+      for (const it of inRef) { const e = it.e; if ((G.eflag[e] & 1) || !(G.emaxg[e] > lim) || !isVis(e)) continue;
+        for (let p = G.pstart[e]; p < G.pstart[e + 1]; p++) if (G.pgr[p] > lim + 1e-9) tracePts(subPath(G, e, G.ppos[p], G.ppos[p] + G.plen[p])); }
+      ctx.stroke();
+    }
+    if ($("showUnc").checked) {
+      ctx.beginPath(); ctx.strokeStyle = "#8a7f96"; ctx.lineWidth = Math.max(2, width * 0.7); ctx.setLineDash([4, 3]);
+      for (const it of inRef) { const e = it.e; if ((G.eflag[e] & 1) || !isVis(e)) continue;
+        for (let p = G.pstart[e]; p < G.pstart[e + 1]; p++) if ((G.pq[p] & Core.UNCERTAIN) || G.pgr[p] !== G.pgr[p]) tracePts(subPath(G, e, G.ppos[p], G.ppos[p] + G.plen[p])); }
+      ctx.stroke(); ctx.setLineDash([]);
+    }
+    if ($("showSteps").checked) {
+      ctx.beginPath(); ctx.strokeStyle = "#c1272d"; ctx.lineWidth = Math.max(2.5, width * 0.9);
+      for (const it of inRef) if ((G.eflag[it.e] & 1) && isVis(it.e)) tracePts(edgePath(G, it.e));
+      ctx.stroke();
+    }
+    const showAm = $("showAm").checked, showSt = $("showSt").checked, showBn = $("showBn").checked, showBus = $("showBus").checked;
+    const dotScale = z >= 15 ? 1 : z === 14 ? 0.7 : 0.5, stR = z >= 14 ? 8 : 5, cA = state.cA;
+    if (showSt && z >= 16) for (let i = 0; i < POI.n; i++) {   // bocas de metro alcanzadas
+      if (POI.cat[i] !== 8 || !cA.entIn[i]) continue;
+      const x = X_(POI.mx[i]), y = Y_(POI.my[i]); if (x < -6 || y < -6 || x > size.x + 6 || y > size.y + 6) continue;
+      ctx.globalAlpha = !state.o.avoidSteps || POI.wc[i] === 1 ? 1 : 0.35;
+      ctx.fillStyle = STATION_COLORS[POI.wc[i]]; ctx.fillRect(x - 4, y - 4, 8, 8);
+      ctx.lineWidth = 1.5; ctx.strokeStyle = "#15171a"; ctx.strokeRect(x - 4, y - 4, 8, 8); ctx.globalAlpha = 1;
+    }
+    for (let i = 0; i < POI.n; i++) {
+      if (!cA.inR[i]) continue;
+      const c = POI.cat[i], x = X_(POI.mx[i]), y = Y_(POI.my[i]);
+      if (x < -10 || y < -10 || x > size.x + 10 || y > size.y + 10) continue;
+      if (c === 6) {
+        if (!showSt) continue;
+        const wc = POI.wc[i]; ctx.globalAlpha = cA.usable[i] ? 1 : 0.35;
+        ctx.beginPath(); ctx.arc(x, y, stR, 0, 6.2832); ctx.fillStyle = STATION_COLORS[wc]; ctx.fill();
+        ctx.lineWidth = 2; ctx.strokeStyle = "#15171a"; ctx.stroke();
+        const letter = t("sty_short")[Math.max(0, POI.ty[i])];
+        if (letter && z >= 14) { ctx.fillStyle = wc === 0 ? "#15171a" : "#fff"; ctx.font = `700 ${letter.length > 1 ? 7 : 9}px ${font}`; ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillText(letter, x, y + 0.5); }
+        ctx.globalAlpha = 1;
+      } else if (c === 7 ? showBus : c === 5 ? showBn : showAm) {
+        ctx.beginPath(); ctx.arc(x, y, (c === 5 ? 2.2 : 3) * dotScale, 0, 6.2832); ctx.fillStyle = CAT_COLORS[c]; ctx.globalAlpha = 0.9; ctx.fill(); ctx.globalAlpha = 1;
+      }
+    }
+  }
+
+  const boxes = [];
+  const free = (x, y, w, h) => { for (const b of boxes) if (x < b[0] + b[2] && x + w > b[0] && y < b[1] + b[3] && y + h > b[1]) return false; boxes.push([x, y, w, h]); return true; };
+  ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.lineJoin = "round";
+  const label = (text, x, y, f, color, angle = 0) => {
+    ctx.font = f; const w = ctx.measureText(text).width + 6, h = 14;
+    const bw = Math.abs(Math.cos(angle)) * w + Math.abs(Math.sin(angle)) * h, bh = Math.abs(Math.sin(angle)) * w + Math.abs(Math.cos(angle)) * h;
+    if (x - bw / 2 < 0 || y - bh / 2 < 0 || x + bw / 2 > size.x || y + bh / 2 > size.y || !free(x - bw / 2, y - bh / 2, bw, bh)) return;
+    ctx.save(); ctx.translate(x, y); ctx.rotate(angle);
+    ctx.strokeStyle = THEME["map-halo"]; ctx.lineWidth = 3.5; ctx.strokeText(text, 0, 0); ctx.fillStyle = color; ctx.fillText(text, 0, 0); ctx.restore();
+  };
+  const stDone = new Map();
+  if (z >= 14) for (let i = 0; i < POI.n; i++) if (POI.cat[i] === 6 && POI.name[i]) {
+    const x = X_(POI.mx[i]), y = Y_(POI.my[i]) - 14, nm = POI.names[POI.name[i]], prev = stDone.get(nm);
+    if (prev && Math.hypot(prev[0] - x, prev[1] - y) < 250) continue;
+    if (x > 0 && y > 0 && x < size.x && y < size.y) { stDone.set(nm, [x, y]); label(nm, x, y, "600 12px " + font, THEME["map-label"]); }
+  }
+  for (const p of X.parkLabelsM) { const x = X_(p[0]), y = Y_(p[1]); if (x > 0 && y > 0 && x < size.x && y < size.y && (z >= 14 || p[3] < 20)) label(X.names[p[2]], x, y, "italic 12px " + font, THEME["map-park-label"]); }
+  if (z >= 16) {
+    const seen = new Set(), f = "11px " + font;
+    const cand = vis.filter(e => G.en[e] && G.elen[e] > 45).sort((a, b) => G.elen[b] - G.elen[a]);
+    for (const e of cand) {
+      const nm = X.names[G.en[e]]; if (seen.has(nm)) continue;
+      const p = edgePath(G, e); let bi = 2, bl = -1;
+      for (let i = 2; i < p.length; i += 2) { const l = Math.hypot(p[i] - p[i - 2], p[i + 1] - p[i - 1]); if (l > bl) { bl = l; bi = i; } }
+      const x0 = X_(p[bi - 2]), y0 = Y_(p[bi - 1]), x1 = X_(p[bi]), y1 = Y_(p[bi + 1]);
+      ctx.font = f; if (Math.hypot(x1 - x0, y1 - y0) < ctx.measureText(nm).width + 10) continue;
+      let a = Math.atan2(y1 - y0, x1 - x0); if (a > Math.PI / 2) a -= Math.PI; if (a < -Math.PI / 2) a += Math.PI;
+      const before = boxes.length; label(nm, (x0 + x1) / 2, (y0 + y1) / 2, f, THEME["map-label"], a);
+      if (boxes.length > before) seen.add(nm);
+    }
+  }
+}
+
+// ================= enlace con estado: los ajustes van en la dirección, tras el # =================
+let hashTimer;
+function hashParams() {
+  return new URLSearchParams({ lat: origin.lat.toFixed(5), lng: origin.lng.toFixed(5), min: $("minutes").value,
+    spd: (+$("speed").value).toFixed(2), st: $("steps").checked ? 1 : 0, cu: $("slope").checked ? 1 : 0, pm: $("avoidSteep").checked ? $("maxGrade").value : 0,
+    pu: $("avoidSteep").checked && $("uncBarrier").checked ? 1 : 0, z: map.getZoom(), city: CITY, lang: LANG });
+}
+function writeHash() {
+  clearTimeout(hashTimer);
+  hashTimer = setTimeout(() => { try { history.replaceState(null, "", "#" + hashParams().toString()); } catch (e) { /* algunos navegadores lo limitan */ } }, 250);
+}
+function applyHash() {
+  const num = (k, lo, hi) => { const v = parseFloat(qs.get(k)); return Number.isFinite(v) && v >= lo && v <= hi ? v : null; };
+  const [W, S, E, N] = X.bbox;
+  const lat = num("lat", S, N), lng = num("lng", W, E);
+  if (lat !== null && lng !== null) origin = L.latLng(lat, lng);
+  const m = num("min", 5, 30); if (m !== null) $("minutes").value = Math.round(m);
+  const sp = num("spd", 0.8, 1.8); if (sp !== null) $("speed").value = sp;
+  if (qs.get("st") === "1") $("steps").checked = true;
+  if (qs.get("cu") === "1") $("slope").checked = true;
+  // umbrales disponibles: 4, 6, 8, 10 y 12 %; un valor intermedio de un enlace antiguo se redondea al umbral más estricto
+  const pm = num("pm", 3, 12); if (pm !== null) { $("avoidSteep").checked = true; $("maxGrade").value = Math.max(4, Math.floor(pm / 2) * 2); }
+  if (qs.get("pu") === "1") $("uncBarrier").checked = true;
+  labels();
+  const z = num("z", 12, 19);
+  return { hasPlace: lat !== null && lng !== null, zoom: z };
+}
+$("share").addEventListener("click", async () => {
+  clearTimeout(hashTimer);
+  try { history.replaceState(null, "", "#" + hashParams().toString()); } catch (e) { /* nada */ }
+  const url = location.href;
+  if (navigator.share) { try { await navigator.share({ title: document.title, text: tc("share_text"), url }); return; } catch (e) { if (e && e.name === "AbortError") return; } }
+  try { await navigator.clipboard.writeText(url); $("shareMsg").textContent = t("copied"); }
+  catch (e) { $("shareMsg").textContent = t("copy_fail"); }
+  setTimeout(() => { $("shareMsg").textContent = ""; }, 3000);
+});
+
+// ================= buscador (sin servidor: usa los nombres que vienen con los datos) =================
+let INDEX = null, hits = [], active = -1;
+const norm = s => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+function buildIndex() {
+  const seen = new Map(), out = [];
+  const add = (label, kind, lon, lat) => {
+    const key = kind + ":" + norm(label);
+    if (seen.has(key)) return seen.get(key);
+    const it = { label, n: norm(label), kind, lon, lat, len: 0 };
+    seen.set(key, it); out.push(it); return it;
+  };
+  for (let i = 0; i < POI.n; i++) if (POI.cat[i] === 6 && POI.name[i]) add(POI.names[POI.name[i]], 0, POI.lon[i], POI.lat[i]);
+  for (const p of X.parkLabels) add(X.names[p[2]], 1, p[0] / 1e5, p[1] / 1e5);
+  for (let e = 0; e < G.nE; e++) {
+    if (!G.en[e]) continue;
+    const it = add(X.names[G.en[e]], 2, 0, 0);
+    if (G.elen[e] > it.len) { it.len = G.elen[e]; const u = G.eu[e], v = G.ev[e]; it.lon = (G.lon[u] + G.lon[v]) / 2; it.lat = (G.lat[u] + G.lat[v]) / 2; }
+  }
+  INDEX = out;
+}
+function search(q) {
+  const words = norm(q).trim().split(/\s+/).filter(Boolean);
+  if (!words.length) return [];
+  const res = [];
+  for (const it of INDEX) {
+    if (!words.every(w => it.n.includes(w))) continue;
+    const i = it.n.indexOf(words[0]);
+    const pos = i === 0 ? 0 : (i > 0 && /[\s\-'(]/.test(it.n[i - 1])) ? 1 : 2;
+    res.push([pos, it.kind, it.n.length, it]);
+  }
+  res.sort((a, b) => a[0] - b[0] || a[1] - b[1] || a[2] - b[2]);
+  return res.slice(0, 8).map(r => r[3]);
+}
+function renderResults() {
+  const ul = $("results");
+  if (!hits.length) {
+    ul.innerHTML = $("q").value.trim() ? `<li aria-disabled="true"><span>${t("no_results")}</span></li>` : "";
+  } else {
+    ul.innerHTML = hits.map((h, i) => `<li role="option" id="opt${i}" aria-selected="${i === active}"><span>${h.label.replace(/[&<>]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" })[c])}</span><small>${t("kinds")[h.kind]}</small></li>`).join("");
+  }
+  const open = !!ul.innerHTML;
+  ul.hidden = !open; $("q").setAttribute("aria-expanded", String(open));
+  if (active >= 0) $("q").setAttribute("aria-activedescendant", "opt" + active); else $("q").removeAttribute("aria-activedescendant");
+}
+function closeResults() {
+  hits = []; active = -1; $("results").innerHTML = ""; $("results").hidden = true;
+  $("q").setAttribute("aria-expanded", "false"); $("q").removeAttribute("aria-activedescendant");
+}
+function goTo(lat, lng) { origin = L.latLng(lat, lng); marker.setLatLng(origin); fitNext = true; schedule(); }
+function choose(i) { const h = hits[i]; if (!h) return; $("q").value = h.label; closeResults(); goTo(h.lat, h.lon); }
+$("q").addEventListener("input", () => { if (!INDEX) buildIndex(); hits = search($("q").value); active = hits.length ? 0 : -1; renderResults(); });
+$("q").addEventListener("keydown", e => {
+  if (e.key === "ArrowDown" && hits.length) { active = (active + 1) % hits.length; renderResults(); e.preventDefault(); }
+  else if (e.key === "ArrowUp" && hits.length) { active = (active - 1 + hits.length) % hits.length; renderResults(); e.preventDefault(); }
+  else if (e.key === "Enter") { if (active >= 0) { choose(active); e.preventDefault(); $("q").blur(); } }
+  else if (e.key === "Escape") closeResults();
+});
+$("results").addEventListener("mousedown", e => { const li = e.target.closest("li[role=option]"); if (li) { e.preventDefault(); choose(+li.id.slice(3)); } });
+$("q").addEventListener("blur", () => setTimeout(closeResults, 150));
+
+$("locate").addEventListener("click", () => {
+  if (!navigator.geolocation) { setStatus(t("loc_err"), "err"); return; }
+  lastStatus = ["locating", "busy"]; setStatus(t("locating"), "busy");
+  navigator.geolocation.getCurrentPosition(p => {
+    lastStatus = null; setStatus("");
+    const [W, S, E, N] = X.bbox, { latitude: la, longitude: lo } = p.coords;
+    if (la < S || la > N || lo < W || lo > E) { lastStatus = ["loc_out", "err"]; setStatus(tc("loc_out"), "err"); return; }
+    goTo(la, lo);
+  }, () => { lastStatus = ["loc_err", "err"]; setStatus(t("loc_err"), "err"); }, { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 });
+});
+
+// ================= eventos =================
+["minutes", "speed"].forEach(id => $(id).addEventListener("input", schedule));
+["steps", "slope", "avoidSteep", "uncBarrier"].forEach(id => $(id).addEventListener("change", schedule));
+$("maxGrade").addEventListener("input", () => { slopeLabels(); if ($("avoidSteep").checked) schedule(); else draw(); });
+["showAm", "showSt", "showBn", "showBus", "showSteps", "showSteep", "showUnc"].forEach(id => $(id).addEventListener("change", draw));
+map.on("click", e => { origin = e.latlng; marker.setLatLng(origin); schedule(); });
+marker.on("drag", () => { origin = marker.getLatLng(); schedule(); });
+map.on("moveend zoomend resize", () => { draw(); if (G) writeHash(); });
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => draw());
+
+// ================= carga =================
+applyLang();
+lastStatus = ["loading", "busy"]; setStatus(tc("loading"), "busy");
+async function loadCity(id, fromHash) {
+  CITY = id; $("city").value = id;
+  lastStatus = ["loading", "busy"]; setStatus(tc("loading"), "busy");
+  let D = CACHE.get(id);
+  if (!D) {
+    for (const k in progress) delete progress[k];
+    const [gBytes, xBytes, pBytes] = await Promise.all(["graph.bin.gz", "extra.json.gz", "pois.json.gz"].map(f => fetchBytes(`data/${id}/${f}`).then(gunzip)));
+    lastStatus = ["preparing", "busy"]; setStatus(t("preparing"), "busy");
+    await new Promise(r => setTimeout(r, 0));
+    const g = Core.parseGraph(gBytes), x = JSON.parse(new TextDecoder().decode(xBytes)), p = Core.parsePois(JSON.parse(new TextDecoder().decode(pBytes)));
+    const toRing = flat => { const m = new Float64Array(flat.length); let x0 = 1, y0 = 1, x1 = 0, y1 = 0;
+      for (let i = 0; i < flat.length; i += 2) { m[i] = mercX(flat[i] / 1e5); m[i + 1] = mercY(flat[i + 1] / 1e5); x0 = Math.min(x0, m[i]); x1 = Math.max(x1, m[i]); y0 = Math.min(y0, m[i + 1]); y1 = Math.max(y1, m[i + 1]); }
+      return { m, x0, y0, x1, y1 }; };
+    x.parks = x.parks.map(toRing); x.water = x.water.map(toRing);
+    x.parkLabelsM = x.parkLabels.map((q, i) => [mercX(q[0] / 1e5), mercY(q[1] / 1e5), q[2], i]);
+    D = { G: g, EG: Core.buildEdgeGrid(g), X: x, POI: p };
+    CACHE.set(id, D);
+  }
+  ({ G, EG, X, POI } = D); INDEX = null; SUBCAT = null; state = null;
+  HAS_ST = POI.cat.some(c => c === 6);
+  if (X.date) { const [y, m, d] = X.date.split("-"); DATA_DATE = `${d}/${m}/${y}`; }
+  const [W, S, E, N] = X.bbox;
+  map.setMaxBounds(null);
+  let h = { hasPlace: false };
+  if (fromHash) h = applyHash();
+  if (!h.hasPlace) origin = L.latLng(X.start[0], X.start[1]);
+  marker.setLatLng(origin);
+  map.setView(origin, h.zoom || X.zoom || 15, { animate: false });
+  map.setMaxBounds([[S - 0.02, W - 0.03], [N + 0.02, E + 0.03]]);
+  if (!h.hasPlace) fitNext = true;
+  lastStatus = null; setStatus("");
+  applyLang();
+}
+(async function load() {
+  try {
+    try { const r = await fetch("data/cities.json"); if (r.ok) CITIES = (await r.json()).cities; } catch (e) { /* sin índice: solo Madrid */ }
+    $("city").innerHTML = CITIES.map(c => `<option value="${c.id}">${c.name}</option>`).join("");
+    const want = qs.get("city"), first = CITIES.some(c => c.id === want) ? want : CITIES[0].id;
+    await loadCity(first, true);
+    $("q").disabled = false; $("locate").disabled = false; $("city").disabled = CITIES.length < 2;
+  } catch (err) {
+    console.error(err);
+    lastStatus = null; setStatus(t("load_err").replace("{e}", err.message), "err");
+  }
+})();
+$("city").addEventListener("change", async () => {
+  try { $("q").value = ""; await loadCity($("city").value, false); writeHash(); }
+  catch (err) { console.error(err); lastStatus = null; setStatus(t("load_err").replace("{e}", err.message), "err"); }
+});
+</script>
+</body>
+</html>

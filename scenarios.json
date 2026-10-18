@@ -1,0 +1,17 @@
+{
+  "places": {
+    "sol": [40.41690, -3.70350],
+    "vistillas": [40.41210, -3.71400],
+    "salamanca": [40.42530, -3.68370],
+    "madrid_rio": [40.40200, -3.71860]
+  },
+  "settings": {
+    "A_1.4": {"spd": 1.40, "st": 0, "cu": 0, "pm": 0},
+    "B_1.1": {"spd": 1.10, "st": 0, "cu": 0, "pm": 0},
+    "C_1.1_sinescaleras": {"spd": 1.10, "st": 1, "cu": 0, "pm": 0},
+    "D_1.1_sinescaleras_6": {"spd": 1.10, "st": 1, "cu": 0, "pm": 6},
+    "E_1.1_sinescaleras_cuestas_6": {"spd": 1.10, "st": 1, "cu": 1, "pm": 6},
+    "F_1.4_cuestas": {"spd": 1.40, "st": 0, "cu": 1, "pm": 0}
+  },
+  "minutes": 15
+}

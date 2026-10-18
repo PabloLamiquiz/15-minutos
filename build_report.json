@@ -1,0 +1,1783 @@
+{
+ "city": "madrid",
+ "meta": {
+  "created": "2026-10-08T10:20:54.609Z",
+  "config": {
+   "center": [
+    40.4169,
+    -3.7035
+   ],
+   "radius": 7000,
+   "marginDeg": 0.01,
+   "pbf": {
+    "url": "https://download.geofabrik.de/europe/spain/madrid-261006.osm.pbf",
+    "md5": "ad4f40446f40f6ec7e279eb90215d133"
+   },
+   "mdt": {
+    "dataset": "SPA_28079_SERVICIO_MDT_MOSAICO_2025",
+    "url": "https://geoportal.madrid.es/fsdescargas/IDEAM_WBGEOPORTAL/ELEVACIONES/2025/MDT/MOSAICO/MDT_1m.zip",
+    "level": 1,
+    "bytes": 1516568778,
+    "lastModified": "2025-10-15T12:21:37Z"
+   }
+  },
+  "bbox": [
+   -3.7861855754863774,
+   40.353947576515495,
+   -3.6208144245136227,
+   40.4798524234845
+  ],
+  "osm": {
+   "bytes": 85165281,
+   "sha256": "4829371bad00b2aa25dd15c696cc20253749a05c4a034f565e7561e040e1cb33",
+   "timestamp": "2026-10-06T20:21:06.000Z",
+   "replicationUrl": "https://download.geofabrik.de/europe/spain/madrid-updates"
+  }
+ },
+ "dem": {
+  "file": "MDT2024_1m.tif",
+  "level": 1,
+  "resolution_m": 2,
+  "origin_m": [
+   428000,
+   4493000
+  ],
+  "size_px": [
+   14500,
+   15500
+  ],
+  "tile_px": 128,
+  "tilesNeeded": 3306,
+  "tilesRead": 3306,
+  "tiffBytesRead": 366359354,
+  "zipBytesRead": 356321537,
+  "nodata": "-9999",
+  "quantization": "Int16, cm sobre 500 m",
+  "rect": [
+   433088,
+   4467078,
+   447531,
+   4481466
+  ],
+  "note": "muestreado en el navegador (origen geoportal.madrid.es) el 8/10/2026; alturas transferidas como z.bin.gz"
+ },
+ "slopeParams": {
+  "step": 2,
+  "window": 10,
+  "extend": 10,
+  "perp": 3,
+  "stepJump": 0.5,
+  "stepRatio": 3,
+  "crossJump": 1.5,
+  "flankGrad": 0.25,
+  "flankHeight": 2,
+  "structSpan": 150,
+  "thresholds": [
+   0.04,
+   0.06,
+   0.08,
+   0.1,
+   0.12
+  ],
+  "minPiece": 10
+ },
+ "stage1": {
+  "graph": {
+   "walkWays": 113654,
+   "edgesBefore": 203500,
+   "kmBefore": 7094.016327915558,
+   "kmMain": 7024.688652082838,
+   "km": 7024.671328000055,
+   "edgesMainComponent": 201373,
+   "edges": 201368,
+   "nodes": 141864,
+   "componentShare": 0.9895479115479116,
+   "edgeKinds": {
+    "steps": 4538,
+    "steps_ramp": 105,
+    "bridge": 650,
+    "tunnel": 2769,
+    "indoor": 274,
+    "layer": 540,
+    "incline": 3097
+   }
+  },
+  "destTypes": [
+   {
+    "cat": "bus",
+    "sub": "bus_stop",
+    "node": 4105,
+    "way": 24,
+    "relation": 0,
+    "polygon": 24,
+    "dropped_duplicate": 0,
+    "dropped_station": 0,
+    "kept": 4129
+   },
+   {
+    "cat": "entrance",
+    "sub": "subway_entrance",
+    "node": 513,
+    "way": 1,
+    "relation": 0,
+    "polygon": 1,
+    "dropped_duplicate": 0,
+    "dropped_station": 0,
+    "kept": 514
+   },
+   {
+    "cat": "eating",
+    "sub": "restaurant",
+    "node": 4300,
+    "way": 77,
+    "relation": 3,
+    "polygon": 80,
+    "dropped_duplicate": 29,
+    "dropped_station": 0,
+    "kept": 4351
+   },
+   {
+    "cat": "eating",
+    "sub": "pub",
+    "node": 929,
+    "way": 13,
+    "relation": 1,
+    "polygon": 14,
+    "dropped_duplicate": 4,
+    "dropped_station": 0,
+    "kept": 939
+   },
+   {
+    "cat": "health",
+    "sub": "pharmacy",
+    "node": 1560,
+    "way": 3,
+    "relation": 0,
+    "polygon": 3,
+    "dropped_duplicate": 0,
+    "dropped_station": 0,
+    "kept": 1563
+   },
+   {
+    "cat": "eating",
+    "sub": "bar",
+    "node": 1329,
+    "way": 20,
+    "relation": 0,
+    "polygon": 20,
+    "dropped_duplicate": 5,
+    "dropped_station": 0,
+    "kept": 1344
+   },
+   {
+    "cat": "green",
+    "sub": "playground",
+    "node": 413,
+    "way": 1042,
+    "relation": 6,
+    "polygon": 1048,
+    "dropped_duplicate": 38,
+    "dropped_station": 0,
+    "kept": 1423
+   },
+   {
+    "cat": "bench",
+    "sub": "bench",
+    "node": 7909,
+    "way": 66,
+    "relation": 0,
+    "polygon": 4,
+    "dropped_duplicate": 0,
+    "dropped_station": 0,
+    "kept": 7975
+   },
+   {
+    "cat": "health",
+    "sub": "clinic",
+    "node": 226,
+    "way": 89,
+    "relation": 8,
+    "polygon": 97,
+    "dropped_duplicate": 2,
+    "dropped_station": 0,
+    "kept": 321
+   },
+   {
+    "cat": "eating",
+    "sub": "cafe",
+    "node": 1165,
+    "way": 30,
+    "relation": 0,
+    "polygon": 30,
+    "dropped_duplicate": 8,
+    "dropped_station": 0,
+    "kept": 1187
+   },
+   {
+    "cat": "grocery",
+    "sub": "butcher",
+    "node": 196,
+    "way": 1,
+    "relation": 0,
+    "polygon": 1,
+    "dropped_duplicate": 1,
+    "dropped_station": 0,
+    "kept": 196
+   },
+   {
+    "cat": "grocery",
+    "sub": "supermarket",
+    "node": 638,
+    "way": 79,
+    "relation": 0,
+    "polygon": 79,
+    "dropped_duplicate": 7,
+    "dropped_station": 0,
+    "kept": 710
+   },
+   {
+    "cat": "grocery",
+    "sub": "convenience",
+    "node": 962,
+    "way": 29,
+    "relation": 0,
+    "polygon": 29,
+    "dropped_duplicate": 7,
+    "dropped_station": 0,
+    "kept": 984
+   },
+   {
+    "cat": "education",
+    "sub": "library",
+    "node": 50,
+    "way": 38,
+    "relation": 3,
+    "polygon": 41,
+    "dropped_duplicate": 0,
+    "dropped_station": 0,
+    "kept": 91
+   },
+   {
+    "cat": "grocery",
+    "sub": "bakery",
+    "node": 436,
+    "way": 3,
+    "relation": 0,
+    "polygon": 3,
+    "dropped_duplicate": 1,
+    "dropped_station": 0,
+    "kept": 438
+   },
+   {
+    "cat": "grocery",
+    "sub": "greengrocer",
+    "node": 417,
+    "way": 1,
+    "relation": 0,
+    "polygon": 1,
+    "dropped_duplicate": 2,
+    "dropped_station": 0,
+    "kept": 416
+   },
+   {
+    "cat": "education",
+    "sub": "kindergarten",
+    "node": 311,
+    "way": 115,
+    "relation": 3,
+    "polygon": 118,
+    "dropped_duplicate": 11,
+    "dropped_station": 0,
+    "kept": 418
+   },
+   {
+    "cat": "education",
+    "sub": "school",
+    "node": 253,
+    "way": 604,
+    "relation": 41,
+    "polygon": 645,
+    "dropped_duplicate": 31,
+    "dropped_station": 0,
+    "kept": 867
+   },
+   {
+    "cat": "health",
+    "sub": "dentist",
+    "node": 419,
+    "way": 6,
+    "relation": 0,
+    "polygon": 6,
+    "dropped_duplicate": 0,
+    "dropped_station": 0,
+    "kept": 425
+   },
+   {
+    "cat": "health",
+    "sub": "hospital",
+    "node": 10,
+    "way": 45,
+    "relation": 4,
+    "polygon": 49,
+    "dropped_duplicate": 1,
+    "dropped_station": 0,
+    "kept": 58
+   },
+   {
+    "cat": "health",
+    "sub": "doctors",
+    "node": 117,
+    "way": 5,
+    "relation": 0,
+    "polygon": 5,
+    "dropped_duplicate": 0,
+    "dropped_station": 0,
+    "kept": 122
+   },
+   {
+    "cat": "green",
+    "sub": "garden",
+    "node": 6,
+    "way": 9366,
+    "relation": 74,
+    "polygon": 9440,
+    "dropped_duplicate": 1,
+    "dropped_station": 0,
+    "kept": 9445
+   },
+   {
+    "cat": "station",
+    "sub": "station",
+    "node": 179,
+    "way": 10,
+    "relation": 0,
+    "polygon": 10,
+    "dropped_duplicate": 4,
+    "dropped_station": 1,
+    "kept": 184
+   },
+   {
+    "cat": "green",
+    "sub": "park",
+    "node": 11,
+    "way": 1405,
+    "relation": 44,
+    "polygon": 1449,
+    "dropped_duplicate": 9,
+    "dropped_station": 0,
+    "kept": 1451
+   },
+   {
+    "cat": "entrance",
+    "sub": "train_station_entrance",
+    "node": 1,
+    "way": 0,
+    "relation": 0,
+    "polygon": 0,
+    "dropped_duplicate": 0,
+    "dropped_station": 0,
+    "kept": 1
+   }
+  ],
+  "duplicates": [
+   {
+    "keep": "w237756615",
+    "drop": "n266167485",
+    "cat": "education",
+    "sub": "school",
+    "dist_m": 21,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "w297459454",
+    "drop": "n266167531",
+    "cat": "education",
+    "sub": "school",
+    "dist_m": 22,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "w28776950",
+    "drop": "n266167560",
+    "cat": "education",
+    "sub": "school",
+    "dist_m": 17,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "w331008180",
+    "drop": "n266167668",
+    "cat": "education",
+    "sub": "school",
+    "dist_m": 6,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "w237756611",
+    "drop": "n266167722",
+    "cat": "education",
+    "sub": "school",
+    "dist_m": 27,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "w242703074",
+    "drop": "n266167794",
+    "cat": "education",
+    "sub": "school",
+    "dist_m": 15,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "w542635213",
+    "drop": "n266167808",
+    "cat": "education",
+    "sub": "school",
+    "dist_m": 27,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "w327149602",
+    "drop": "n266167817",
+    "cat": "education",
+    "sub": "school",
+    "dist_m": 15,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "w28776950",
+    "drop": "n266167829",
+    "cat": "education",
+    "sub": "school",
+    "dist_m": 29,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "w28776776",
+    "drop": "n266167928",
+    "cat": "education",
+    "sub": "school",
+    "dist_m": 32,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "w237990601",
+    "drop": "n266167957",
+    "cat": "education",
+    "sub": "school",
+    "dist_m": 39,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "n266167970",
+    "drop": "n266169579",
+    "cat": "education",
+    "sub": "school",
+    "dist_m": 7,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "w237715610",
+    "drop": "n266167983",
+    "cat": "education",
+    "sub": "school",
+    "dist_m": 16,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "w242703090",
+    "drop": "n266168105",
+    "cat": "education",
+    "sub": "school",
+    "dist_m": 37,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "w297459454",
+    "drop": "n266168402",
+    "cat": "education",
+    "sub": "school",
+    "dist_m": 41,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "w301602111",
+    "drop": "n266168446",
+    "cat": "education",
+    "sub": "school",
+    "dist_m": 38,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "w35605971",
+    "drop": "n266168682",
+    "cat": "education",
+    "sub": "school",
+    "dist_m": 34,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "w35605971",
+    "drop": "n266168698",
+    "cat": "education",
+    "sub": "school",
+    "dist_m": 26,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "w338379447",
+    "drop": "n266168759",
+    "cat": "education",
+    "sub": "kindergarten",
+    "dist_m": 8,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "w237756615",
+    "drop": "n266168771",
+    "cat": "education",
+    "sub": "school",
+    "dist_m": 62,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "w297466793",
+    "drop": "n266169114",
+    "cat": "education",
+    "sub": "school",
+    "dist_m": 18,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "w28763758",
+    "drop": "n266169228",
+    "cat": "education",
+    "sub": "school",
+    "dist_m": 5,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "w237756615",
+    "drop": "n266169255",
+    "cat": "education",
+    "sub": "school",
+    "dist_m": 36,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "w334630462",
+    "drop": "n266169491",
+    "cat": "education",
+    "sub": "school",
+    "dist_m": 22,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "n266170026",
+    "drop": "n5893765872",
+    "cat": "education",
+    "sub": "kindergarten",
+    "dist_m": 9,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "w449078793",
+    "drop": "n266170053",
+    "cat": "education",
+    "sub": "school",
+    "dist_m": 24,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "w301602111",
+    "drop": "n266170490",
+    "cat": "education",
+    "sub": "school",
+    "dist_m": 36,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "w301602111",
+    "drop": "n266170841",
+    "cat": "education",
+    "sub": "school",
+    "dist_m": 34,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "w301602111",
+    "drop": "n266171201",
+    "cat": "education",
+    "sub": "school",
+    "dist_m": 46,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "w460574325",
+    "drop": "n266171288",
+    "cat": "education",
+    "sub": "kindergarten",
+    "dist_m": 13,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "w410689300",
+    "drop": "n301831952",
+    "cat": "health",
+    "sub": "clinic",
+    "dist_m": 29,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "w1436512923",
+    "drop": "n344094581",
+    "cat": "green",
+    "sub": "playground",
+    "dist_m": 7,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "n12081159379",
+    "drop": "n612920897",
+    "cat": "eating",
+    "sub": "cafe",
+    "dist_m": 13,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "w1462037774",
+    "drop": "n747742208",
+    "cat": "eating",
+    "sub": "pub",
+    "dist_m": 4,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "n2643887894",
+    "drop": "n885680156",
+    "cat": "eating",
+    "sub": "restaurant",
+    "dist_m": 11,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "w911217314",
+    "drop": "n993186603",
+    "cat": "green",
+    "sub": "playground",
+    "dist_m": 3,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "w331764905",
+    "drop": "n1255067214",
+    "cat": "green",
+    "sub": "garden",
+    "dist_m": 44,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "n6727823385",
+    "drop": "n1517405726",
+    "cat": "eating",
+    "sub": "bar",
+    "dist_m": 5,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "n1645108311",
+    "drop": "n3607622661",
+    "cat": "eating",
+    "sub": "restaurant",
+    "dist_m": 14,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "w353043490",
+    "drop": "n1811091073",
+    "cat": "green",
+    "sub": "playground",
+    "dist_m": 2,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "w353043491",
+    "drop": "n1811091074",
+    "cat": "green",
+    "sub": "playground",
+    "dist_m": 1,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "w727290381",
+    "drop": "n2068640102",
+    "cat": "green",
+    "sub": "playground",
+    "dist_m": 2,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "n2546777612",
+    "drop": "n8701379817",
+    "cat": "eating",
+    "sub": "cafe",
+    "dist_m": 2,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "n5305486974",
+    "drop": "n2609596200",
+    "cat": "station",
+    "sub": "station",
+    "dist_m": 11,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "n2651530886",
+    "drop": "n13159930057",
+    "cat": "eating",
+    "sub": "restaurant",
+    "dist_m": 19,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "n6553913579",
+    "drop": "n2651560892",
+    "cat": "eating",
+    "sub": "restaurant",
+    "dist_m": 27,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "n2697521926",
+    "drop": "n11361728570",
+    "cat": "eating",
+    "sub": "restaurant",
+    "dist_m": 39,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "n2836112493",
+    "drop": "n5758720127",
+    "cat": "eating",
+    "sub": "cafe",
+    "dist_m": 11,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "w184262354",
+    "drop": "n2957113864",
+    "cat": "grocery",
+    "sub": "supermarket",
+    "dist_m": 17,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "n3203075994",
+    "drop": "n3007306700",
+    "cat": "eating",
+    "sub": "restaurant",
+    "dist_m": 21,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "n3168639798",
+    "drop": "n3168639799",
+    "cat": "grocery",
+    "sub": "convenience",
+    "dist_m": 39,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "n3384832942",
+    "drop": "n11869862840",
+    "cat": "eating",
+    "sub": "restaurant",
+    "dist_m": 15,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "w332305101",
+    "drop": "n3471112304",
+    "cat": "green",
+    "sub": "playground",
+    "dist_m": 2,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "n3489256091",
+    "drop": "n3489260155",
+    "cat": "eating",
+    "sub": "restaurant",
+    "dist_m": 23,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "n3502726881",
+    "drop": "n5370259463",
+    "cat": "eating",
+    "sub": "cafe",
+    "dist_m": 22,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "n10873237063",
+    "drop": "n3724071769",
+    "cat": "eating",
+    "sub": "restaurant",
+    "dist_m": 3,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "n3745249181",
+    "drop": "n3745254730",
+    "cat": "education",
+    "sub": "school",
+    "dist_m": 21,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "w375125822",
+    "drop": "n3785145939",
+    "cat": "green",
+    "sub": "playground",
+    "dist_m": 2,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "w375698680",
+    "drop": "n3790466364",
+    "cat": "green",
+    "sub": "playground",
+    "dist_m": 1,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "w375698996",
+    "drop": "n3790470270",
+    "cat": "green",
+    "sub": "playground",
+    "dist_m": 1,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "w1461808933",
+    "drop": "n3926271102",
+    "cat": "green",
+    "sub": "playground",
+    "dist_m": 3,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "n3993297719",
+    "drop": "n4642796273",
+    "cat": "grocery",
+    "sub": "bakery",
+    "dist_m": 13,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "n4161556814",
+    "drop": "n5748979126",
+    "cat": "eating",
+    "sub": "restaurant",
+    "dist_m": 2,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "n4228085813",
+    "drop": "n12895563538",
+    "cat": "eating",
+    "sub": "restaurant",
+    "dist_m": 22,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "w369538356",
+    "drop": "n4228093304",
+    "cat": "eating",
+    "sub": "bar",
+    "dist_m": 12,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "n4253094154",
+    "drop": "n12150041004",
+    "cat": "eating",
+    "sub": "cafe",
+    "dist_m": 15,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "n5759016822",
+    "drop": "n4543601593",
+    "cat": "eating",
+    "sub": "cafe",
+    "dist_m": 7,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "n4568442295",
+    "drop": "n13854423527",
+    "cat": "eating",
+    "sub": "pub",
+    "dist_m": 2,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "n4582627611",
+    "drop": "n10004682758",
+    "cat": "grocery",
+    "sub": "supermarket",
+    "dist_m": 13,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "n4608397103",
+    "drop": "n11037055405",
+    "cat": "eating",
+    "sub": "restaurant",
+    "dist_m": 1,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "n4725920294",
+    "drop": "n10653014106",
+    "cat": "eating",
+    "sub": "restaurant",
+    "dist_m": 7,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "n4776957468",
+    "drop": "n6991759443",
+    "cat": "eating",
+    "sub": "restaurant",
+    "dist_m": 6,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "w755550136",
+    "drop": "n4907732167",
+    "cat": "green",
+    "sub": "playground",
+    "dist_m": 3,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "w755550135",
+    "drop": "n4907732168",
+    "cat": "green",
+    "sub": "playground",
+    "dist_m": 3,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "n5032336821",
+    "drop": "n5034003623",
+    "cat": "eating",
+    "sub": "bar",
+    "dist_m": 23,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "n5161918021",
+    "drop": "n10574556342",
+    "cat": "eating",
+    "sub": "restaurant",
+    "dist_m": 2,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "w1459293545",
+    "drop": "n5302296728",
+    "cat": "station",
+    "sub": "station",
+    "dist_m": 35,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "w1235223864",
+    "drop": "n5303173550",
+    "cat": "station",
+    "sub": "station",
+    "dist_m": 6,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "w449078793",
+    "drop": "n5405810822",
+    "cat": "education",
+    "sub": "school",
+    "dist_m": 28,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "w1358296136",
+    "drop": "n5612376161",
+    "cat": "green",
+    "sub": "playground",
+    "dist_m": 3,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "w690830067",
+    "drop": "n6174490186",
+    "cat": "grocery",
+    "sub": "convenience",
+    "dist_m": 37,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "n6239730392",
+    "drop": "n6239863190",
+    "cat": "grocery",
+    "sub": "convenience",
+    "dist_m": 33,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "n6257690489",
+    "drop": "n6540470885",
+    "cat": "eating",
+    "sub": "restaurant",
+    "dist_m": 21,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "w683696861",
+    "drop": "n6404110511",
+    "cat": "green",
+    "sub": "playground",
+    "dist_m": 1,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "w714477260",
+    "drop": "n6716058877",
+    "cat": "green",
+    "sub": "playground",
+    "dist_m": 1,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "n9626371117",
+    "drop": "n7021697086",
+    "cat": "eating",
+    "sub": "restaurant",
+    "dist_m": 1,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "w1243725759",
+    "drop": "n7707971704",
+    "cat": "green",
+    "sub": "playground",
+    "dist_m": 3,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "w1544097466",
+    "drop": "n7770619521",
+    "cat": "green",
+    "sub": "playground",
+    "dist_m": 3,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "n7881937285",
+    "drop": "n12914109850",
+    "cat": "eating",
+    "sub": "restaurant",
+    "dist_m": 17,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "w1413586323",
+    "drop": "n8278860554",
+    "cat": "green",
+    "sub": "playground",
+    "dist_m": 1,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "w1436531115",
+    "drop": "n8314017462",
+    "cat": "green",
+    "sub": "playground",
+    "dist_m": 5,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "w690830067",
+    "drop": "n8358875782",
+    "cat": "grocery",
+    "sub": "convenience",
+    "dist_m": 34,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "w909644922",
+    "drop": "n8486598041",
+    "cat": "green",
+    "sub": "playground",
+    "dist_m": 3,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "n8793021620",
+    "drop": "n10574468209",
+    "cat": "eating",
+    "sub": "restaurant",
+    "dist_m": 14,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "n8928969617",
+    "drop": "n10574530541",
+    "cat": "eating",
+    "sub": "restaurant",
+    "dist_m": 6,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "n8960060417",
+    "drop": "n10574589441",
+    "cat": "eating",
+    "sub": "restaurant",
+    "dist_m": 12,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "n9528007783",
+    "drop": "n9528007784",
+    "cat": "grocery",
+    "sub": "convenience",
+    "dist_m": 26,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "w1522927938",
+    "drop": "n9652791587",
+    "cat": "green",
+    "sub": "playground",
+    "dist_m": 9,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "w1522927939",
+    "drop": "n9652796628",
+    "cat": "green",
+    "sub": "playground",
+    "dist_m": 2,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "w1522927942",
+    "drop": "n9652801048",
+    "cat": "green",
+    "sub": "playground",
+    "dist_m": 4,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "n9751343380",
+    "drop": "n9751343381",
+    "cat": "health",
+    "sub": "clinic",
+    "dist_m": 24,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "n9754443017",
+    "drop": "n9754445117",
+    "cat": "eating",
+    "sub": "restaurant",
+    "dist_m": 2,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "n9835651017",
+    "drop": "n9821380117",
+    "cat": "eating",
+    "sub": "cafe",
+    "dist_m": 13,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "w1010474121",
+    "drop": "n9867412539",
+    "cat": "green",
+    "sub": "playground",
+    "dist_m": 37,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "n9867631783",
+    "drop": "n9867631793",
+    "cat": "grocery",
+    "sub": "supermarket",
+    "dist_m": 25,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "w1373418367",
+    "drop": "n9873042740",
+    "cat": "eating",
+    "sub": "cafe",
+    "dist_m": 5,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "w338226924",
+    "drop": "n9966125221",
+    "cat": "eating",
+    "sub": "restaurant",
+    "dist_m": 10,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "w234969884",
+    "drop": "n10004673111",
+    "cat": "green",
+    "sub": "playground",
+    "dist_m": 3,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "w671903118",
+    "drop": "n10197306075",
+    "cat": "green",
+    "sub": "playground",
+    "dist_m": 9,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "n10200602604",
+    "drop": "n10299468151",
+    "cat": "eating",
+    "sub": "restaurant",
+    "dist_m": 1,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "w1441634248",
+    "drop": "n10272914848",
+    "cat": "education",
+    "sub": "school",
+    "dist_m": 27,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "n10564500199",
+    "drop": "n10564464605",
+    "cat": "eating",
+    "sub": "pub",
+    "dist_m": 27,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "n10574570541",
+    "drop": "n10816000407",
+    "cat": "eating",
+    "sub": "restaurant",
+    "dist_m": 4,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "w255860927",
+    "drop": "n10919536705",
+    "cat": "health",
+    "sub": "hospital",
+    "dist_m": 15,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "n10940518762",
+    "drop": "n13667000872",
+    "cat": "grocery",
+    "sub": "greengrocer",
+    "dist_m": 1,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "n10940518762",
+    "drop": "n13719407400",
+    "cat": "grocery",
+    "sub": "greengrocer",
+    "dist_m": 2,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "n11143600879",
+    "drop": "n11143600880",
+    "cat": "eating",
+    "sub": "bar",
+    "dist_m": 21,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "n11327476224",
+    "drop": "n11343174430",
+    "cat": "grocery",
+    "sub": "supermarket",
+    "dist_m": 22,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "n11637933339",
+    "drop": "n12117433913",
+    "cat": "grocery",
+    "sub": "convenience",
+    "dist_m": 2,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "n11704437618",
+    "drop": "n11765715669",
+    "cat": "eating",
+    "sub": "restaurant",
+    "dist_m": 7,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "n12068556551",
+    "drop": "n12068543855",
+    "cat": "eating",
+    "sub": "bar",
+    "dist_m": 34,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "n12072346410",
+    "drop": "n12961330001",
+    "cat": "grocery",
+    "sub": "supermarket",
+    "dist_m": 7,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "n12186161069",
+    "drop": "n12186161071",
+    "cat": "grocery",
+    "sub": "butcher",
+    "dist_m": 27,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "w1484937833",
+    "drop": "n12218883092",
+    "cat": "grocery",
+    "sub": "supermarket",
+    "dist_m": 39,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "n12297523801",
+    "drop": "n13062903252",
+    "cat": "grocery",
+    "sub": "supermarket",
+    "dist_m": 37,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "n12599618501",
+    "drop": "n12523330945",
+    "cat": "eating",
+    "sub": "restaurant",
+    "dist_m": 11,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "w352171226",
+    "drop": "n12529450296",
+    "cat": "eating",
+    "sub": "restaurant",
+    "dist_m": 9,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "w406779675",
+    "drop": "n12571875707",
+    "cat": "eating",
+    "sub": "restaurant",
+    "dist_m": 4,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "w460403096",
+    "drop": "n12723725936",
+    "cat": "grocery",
+    "sub": "convenience",
+    "dist_m": 13,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "w1462523959",
+    "drop": "n13394841978",
+    "cat": "eating",
+    "sub": "pub",
+    "dist_m": 4,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "w1487002865",
+    "drop": "n13631041130",
+    "cat": "education",
+    "sub": "kindergarten",
+    "dist_m": 0,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "w623179023",
+    "drop": "n13871683405",
+    "cat": "green",
+    "sub": "playground",
+    "dist_m": 7,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "w623179023",
+    "drop": "n13871683406",
+    "cat": "green",
+    "sub": "playground",
+    "dist_m": 5,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "w623179023",
+    "drop": "n13871683407",
+    "cat": "green",
+    "sub": "playground",
+    "dist_m": 3,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "w1522927938",
+    "drop": "n13884550768",
+    "cat": "green",
+    "sub": "playground",
+    "dist_m": 3,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "w1522927938",
+    "drop": "n13884550769",
+    "cat": "green",
+    "sub": "playground",
+    "dist_m": 4,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "w1522927938",
+    "drop": "n13884554108",
+    "cat": "green",
+    "sub": "playground",
+    "dist_m": 12,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "w1522927939",
+    "drop": "n13884554109",
+    "cat": "green",
+    "sub": "playground",
+    "dist_m": 9,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "w1522927939",
+    "drop": "n13884554117",
+    "cat": "green",
+    "sub": "playground",
+    "dist_m": 3,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "w1010474121",
+    "drop": "n13999525207",
+    "cat": "green",
+    "sub": "playground",
+    "dist_m": 29,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "w1010474121",
+    "drop": "n13999525208",
+    "cat": "green",
+    "sub": "playground",
+    "dist_m": 13,
+    "why": "nodo dentro del polígono"
+   },
+   {
+    "keep": "w26117848",
+    "drop": "w665127844",
+    "cat": "green",
+    "sub": "park",
+    "dist_m": 0,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "w242145509",
+    "drop": "w242145513",
+    "cat": "green",
+    "sub": "playground",
+    "dist_m": 27,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "w588473876",
+    "drop": "w254962465",
+    "cat": "education",
+    "sub": "kindergarten",
+    "dist_m": 39,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "w553351891",
+    "drop": "w553375981",
+    "cat": "green",
+    "sub": "park",
+    "dist_m": 31,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "w553351891",
+    "drop": "w553375980",
+    "cat": "green",
+    "sub": "park",
+    "dist_m": 26,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "w553351894",
+    "drop": "w553351897",
+    "cat": "green",
+    "sub": "park",
+    "dist_m": 36,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "w553351895",
+    "drop": "w553351896",
+    "cat": "green",
+    "sub": "park",
+    "dist_m": 28,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "w553375982",
+    "drop": "w553375997",
+    "cat": "green",
+    "sub": "park",
+    "dist_m": 27,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "w553375982",
+    "drop": "w553375996",
+    "cat": "green",
+    "sub": "park",
+    "dist_m": 34,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "w553375983",
+    "drop": "w553375998",
+    "cat": "green",
+    "sub": "park",
+    "dist_m": 27,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "w553375984",
+    "drop": "w553375987",
+    "cat": "green",
+    "sub": "park",
+    "dist_m": 21,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "w588473876",
+    "drop": "w588474651",
+    "cat": "education",
+    "sub": "kindergarten",
+    "dist_m": 34,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "w588473876",
+    "drop": "w588474660",
+    "cat": "education",
+    "sub": "kindergarten",
+    "dist_m": 21,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "w588473876",
+    "drop": "w588474663",
+    "cat": "education",
+    "sub": "kindergarten",
+    "dist_m": 25,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "w588473876",
+    "drop": "w588474664",
+    "cat": "education",
+    "sub": "kindergarten",
+    "dist_m": 29,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "w588473876",
+    "drop": "w588474647",
+    "cat": "education",
+    "sub": "kindergarten",
+    "dist_m": 10,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "w588473876",
+    "drop": "w588474654",
+    "cat": "education",
+    "sub": "kindergarten",
+    "dist_m": 17,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "w604683109",
+    "drop": "w604682363",
+    "cat": "station",
+    "sub": "station",
+    "dist_m": 18,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "w773857178",
+    "drop": "w773857179",
+    "cat": "green",
+    "sub": "playground",
+    "dist_m": 34,
+    "why": "mismo nombre a <40 m"
+   },
+   {
+    "keep": "w1433772382",
+    "drop": "w1433772383",
+    "cat": "education",
+    "sub": "school",
+    "dist_m": 0,
+    "why": "mismo nombre a <40 m"
+   }
+  ],
+  "entrances": {
+   "stations": 184,
+   "merged": 1,
+   "entrances": 515,
+   "viaRel": 507,
+   "viaNear": 8,
+   "orphan": 0
+  },
+  "knownEntrances": {
+   "polygonsWithKnownEntrances": 785,
+   "knownEntranceNodes": 1223
+  },
+  "greenClasses": {
+   "playground": 1374,
+   "private": 770,
+   "park_point": 11,
+   "garden_point": 5,
+   "green_large": 554,
+   "green_small": 9605
+  },
+  "rules": {
+   "grocery": [
+    "shop",
+    [
+     "supermarket",
+     "convenience",
+     "greengrocer",
+     "bakery",
+     "butcher"
+    ]
+   ],
+   "health": [
+    "amenity",
+    [
+     "pharmacy",
+     "doctors",
+     "clinic",
+     "hospital",
+     "dentist"
+    ]
+   ],
+   "education": [
+    "amenity",
+    [
+     "school",
+     "kindergarten",
+     "library"
+    ]
+   ],
+   "green": [
+    "leisure",
+    [
+     "park",
+     "garden",
+     "playground"
+    ]
+   ],
+   "eating": [
+    "amenity",
+    [
+     "cafe",
+     "restaurant",
+     "pub",
+     "bar"
+    ]
+   ]
+  },
+  "precedence": "railway=station|halt|tram_stop → railway=subway_entrance|train_station_entrance → amenity=bench → shop → amenity (salud) → amenity (educación) → leisure → amenity (comer) → highway=bus_stop"
+ },
+ "stage3": {
+  "km_by_class": {
+   "0-4": 3870.72,
+   "4-6": 1411.78,
+   "8-10": 350.3,
+   ">12": 261.96,
+   "6-8": 678.57,
+   "unknown": 224.22,
+   "10-12": 179.56,
+   "steps": 47.56
+  },
+  "km_flagged": {
+   "structure": 107.41,
+   "discontinuity": 416.13,
+   "missing": 155.41,
+   "layer": 12.49
+  },
+  "km_total": 7024.67,
+  "length_edges_m": 7024671.48,
+  "max_piece_sum_diff_m": 0,
+  "edges": 201368,
+  "pieces": 267505,
+  "samples": 7881450,
+  "samples_missing": 165610,
+  "attach": {
+   "viaEntr": 1194,
+   "viaKnown": 565,
+   "viaSnap": 37789,
+   "none": 4,
+   "snapDistance_m": {
+    "p50": 4,
+    "p90": 13.3,
+    "max": 149.6
+   }
+  }
+ },
+ "output": {
+  "nodes": 141864,
+  "edges": 201368,
+  "pieces": 267505,
+  "pois": 39552
+ }
+}

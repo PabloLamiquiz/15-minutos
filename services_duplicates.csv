@@ -1,0 +1,162 @@
+cat,sub,keep,drop,dist_m,why
+education,school,w237756615,n266167485,21,nodo dentro del polígono
+education,school,w297459454,n266167531,22,nodo dentro del polígono
+education,school,w28776950,n266167560,17,nodo dentro del polígono
+education,school,w331008180,n266167668,6,nodo dentro del polígono
+education,school,w237756611,n266167722,27,nodo dentro del polígono
+education,school,w242703074,n266167794,15,nodo dentro del polígono
+education,school,w542635213,n266167808,27,nodo dentro del polígono
+education,school,w327149602,n266167817,15,nodo dentro del polígono
+education,school,w28776950,n266167829,29,nodo dentro del polígono
+education,school,w28776776,n266167928,32,nodo dentro del polígono
+education,school,w237990601,n266167957,39,nodo dentro del polígono
+education,school,n266167970,n266169579,7,mismo nombre a <40 m
+education,school,w237715610,n266167983,16,nodo dentro del polígono
+education,school,w242703090,n266168105,37,nodo dentro del polígono
+education,school,w297459454,n266168402,41,nodo dentro del polígono
+education,school,w301602111,n266168446,38,nodo dentro del polígono
+education,school,w35605971,n266168682,34,nodo dentro del polígono
+education,school,w35605971,n266168698,26,nodo dentro del polígono
+education,kindergarten,w338379447,n266168759,8,nodo dentro del polígono
+education,school,w237756615,n266168771,62,nodo dentro del polígono
+education,school,w297466793,n266169114,18,nodo dentro del polígono
+education,school,w28763758,n266169228,5,nodo dentro del polígono
+education,school,w237756615,n266169255,36,nodo dentro del polígono
+education,school,w334630462,n266169491,22,nodo dentro del polígono
+education,kindergarten,n266170026,n5893765872,9,mismo nombre a <40 m
+education,school,w449078793,n266170053,24,nodo dentro del polígono
+education,school,w301602111,n266170490,36,nodo dentro del polígono
+education,school,w301602111,n266170841,34,nodo dentro del polígono
+education,school,w301602111,n266171201,46,nodo dentro del polígono
+education,kindergarten,w460574325,n266171288,13,nodo dentro del polígono
+health,clinic,w410689300,n301831952,29,nodo dentro del polígono
+green,playground,w1436512923,n344094581,7,nodo dentro del polígono
+eating,cafe,n12081159379,n612920897,13,mismo nombre a <40 m
+eating,pub,w1462037774,n747742208,4,nodo dentro del polígono
+eating,restaurant,n2643887894,n885680156,11,mismo nombre a <40 m
+green,playground,w911217314,n993186603,3,nodo dentro del polígono
+green,garden,w331764905,n1255067214,44,nodo dentro del polígono
+eating,bar,n6727823385,n1517405726,5,mismo nombre a <40 m
+eating,restaurant,n1645108311,n3607622661,14,mismo nombre a <40 m
+green,playground,w353043490,n1811091073,2,nodo dentro del polígono
+green,playground,w353043491,n1811091074,1,nodo dentro del polígono
+green,playground,w727290381,n2068640102,2,nodo dentro del polígono
+eating,cafe,n2546777612,n8701379817,2,mismo nombre a <40 m
+station,station,n5305486974,n2609596200,11,mismo nombre a <40 m
+eating,restaurant,n2651530886,n13159930057,19,mismo nombre a <40 m
+eating,restaurant,n6553913579,n2651560892,27,mismo nombre a <40 m
+eating,restaurant,n2697521926,n11361728570,39,mismo nombre a <40 m
+eating,cafe,n2836112493,n5758720127,11,mismo nombre a <40 m
+grocery,supermarket,w184262354,n2957113864,17,nodo dentro del polígono
+eating,restaurant,n3203075994,n3007306700,21,mismo nombre a <40 m
+grocery,convenience,n3168639798,n3168639799,39,mismo nombre a <40 m
+eating,restaurant,n3384832942,n11869862840,15,mismo nombre a <40 m
+green,playground,w332305101,n3471112304,2,nodo dentro del polígono
+eating,restaurant,n3489256091,n3489260155,23,mismo nombre a <40 m
+eating,cafe,n3502726881,n5370259463,22,mismo nombre a <40 m
+eating,restaurant,n10873237063,n3724071769,3,mismo nombre a <40 m
+education,school,n3745249181,n3745254730,21,mismo nombre a <40 m
+green,playground,w375125822,n3785145939,2,nodo dentro del polígono
+green,playground,w375698680,n3790466364,1,nodo dentro del polígono
+green,playground,w375698996,n3790470270,1,nodo dentro del polígono
+green,playground,w1461808933,n3926271102,3,nodo dentro del polígono
+grocery,bakery,n3993297719,n4642796273,13,mismo nombre a <40 m
+eating,restaurant,n4161556814,n5748979126,2,mismo nombre a <40 m
+eating,restaurant,n4228085813,n12895563538,22,mismo nombre a <40 m
+eating,bar,w369538356,n4228093304,12,mismo nombre a <40 m
+eating,cafe,n4253094154,n12150041004,15,mismo nombre a <40 m
+eating,cafe,n5759016822,n4543601593,7,mismo nombre a <40 m
+eating,pub,n4568442295,n13854423527,2,mismo nombre a <40 m
+grocery,supermarket,n4582627611,n10004682758,13,mismo nombre a <40 m
+eating,restaurant,n4608397103,n11037055405,1,mismo nombre a <40 m
+eating,restaurant,n4725920294,n10653014106,7,mismo nombre a <40 m
+eating,restaurant,n4776957468,n6991759443,6,mismo nombre a <40 m
+green,playground,w755550136,n4907732167,3,nodo dentro del polígono
+green,playground,w755550135,n4907732168,3,nodo dentro del polígono
+eating,bar,n5032336821,n5034003623,23,mismo nombre a <40 m
+eating,restaurant,n5161918021,n10574556342,2,mismo nombre a <40 m
+station,station,w1459293545,n5302296728,35,mismo nombre a <40 m
+station,station,w1235223864,n5303173550,6,nodo dentro del polígono
+education,school,w449078793,n5405810822,28,nodo dentro del polígono
+green,playground,w1358296136,n5612376161,3,nodo dentro del polígono
+grocery,convenience,w690830067,n6174490186,37,mismo nombre a <40 m
+grocery,convenience,n6239730392,n6239863190,33,mismo nombre a <40 m
+eating,restaurant,n6257690489,n6540470885,21,mismo nombre a <40 m
+green,playground,w683696861,n6404110511,1,nodo dentro del polígono
+green,playground,w714477260,n6716058877,1,nodo dentro del polígono
+eating,restaurant,n9626371117,n7021697086,1,mismo nombre a <40 m
+green,playground,w1243725759,n7707971704,3,nodo dentro del polígono
+green,playground,w1544097466,n7770619521,3,nodo dentro del polígono
+eating,restaurant,n7881937285,n12914109850,17,mismo nombre a <40 m
+green,playground,w1413586323,n8278860554,1,nodo dentro del polígono
+green,playground,w1436531115,n8314017462,5,nodo dentro del polígono
+grocery,convenience,w690830067,n8358875782,34,mismo nombre a <40 m
+green,playground,w909644922,n8486598041,3,nodo dentro del polígono
+eating,restaurant,n8793021620,n10574468209,14,mismo nombre a <40 m
+eating,restaurant,n8928969617,n10574530541,6,mismo nombre a <40 m
+eating,restaurant,n8960060417,n10574589441,12,mismo nombre a <40 m
+grocery,convenience,n9528007783,n9528007784,26,mismo nombre a <40 m
+green,playground,w1522927938,n9652791587,9,nodo dentro del polígono
+green,playground,w1522927939,n9652796628,2,nodo dentro del polígono
+green,playground,w1522927942,n9652801048,4,nodo dentro del polígono
+health,clinic,n9751343380,n9751343381,24,mismo nombre a <40 m
+eating,restaurant,n9754443017,n9754445117,2,mismo nombre a <40 m
+eating,cafe,n9835651017,n9821380117,13,mismo nombre a <40 m
+green,playground,w1010474121,n9867412539,37,nodo dentro del polígono
+grocery,supermarket,n9867631783,n9867631793,25,mismo nombre a <40 m
+eating,cafe,w1373418367,n9873042740,5,nodo dentro del polígono
+eating,restaurant,w338226924,n9966125221,10,nodo dentro del polígono
+green,playground,w234969884,n10004673111,3,nodo dentro del polígono
+green,playground,w671903118,n10197306075,9,nodo dentro del polígono
+eating,restaurant,n10200602604,n10299468151,1,mismo nombre a <40 m
+education,school,w1441634248,n10272914848,27,nodo dentro del polígono
+eating,pub,n10564500199,n10564464605,27,mismo nombre a <40 m
+eating,restaurant,n10574570541,n10816000407,4,mismo nombre a <40 m
+health,hospital,w255860927,n10919536705,15,nodo dentro del polígono
+grocery,greengrocer,n10940518762,n13667000872,1,mismo nombre a <40 m
+grocery,greengrocer,n10940518762,n13719407400,2,mismo nombre a <40 m
+eating,bar,n11143600879,n11143600880,21,mismo nombre a <40 m
+grocery,supermarket,n11327476224,n11343174430,22,mismo nombre a <40 m
+grocery,convenience,n11637933339,n12117433913,2,mismo nombre a <40 m
+eating,restaurant,n11704437618,n11765715669,7,mismo nombre a <40 m
+eating,bar,n12068556551,n12068543855,34,mismo nombre a <40 m
+grocery,supermarket,n12072346410,n12961330001,7,mismo nombre a <40 m
+grocery,butcher,n12186161069,n12186161071,27,mismo nombre a <40 m
+grocery,supermarket,w1484937833,n12218883092,39,nodo dentro del polígono
+grocery,supermarket,n12297523801,n13062903252,37,mismo nombre a <40 m
+eating,restaurant,n12599618501,n12523330945,11,mismo nombre a <40 m
+eating,restaurant,w352171226,n12529450296,9,nodo dentro del polígono
+eating,restaurant,w406779675,n12571875707,4,nodo dentro del polígono
+grocery,convenience,w460403096,n12723725936,13,mismo nombre a <40 m
+eating,pub,w1462523959,n13394841978,4,mismo nombre a <40 m
+education,kindergarten,w1487002865,n13631041130,0,nodo dentro del polígono
+green,playground,w623179023,n13871683405,7,nodo dentro del polígono
+green,playground,w623179023,n13871683406,5,nodo dentro del polígono
+green,playground,w623179023,n13871683407,3,nodo dentro del polígono
+green,playground,w1522927938,n13884550768,3,nodo dentro del polígono
+green,playground,w1522927938,n13884550769,4,nodo dentro del polígono
+green,playground,w1522927938,n13884554108,12,nodo dentro del polígono
+green,playground,w1522927939,n13884554109,9,nodo dentro del polígono
+green,playground,w1522927939,n13884554117,3,nodo dentro del polígono
+green,playground,w1010474121,n13999525207,29,nodo dentro del polígono
+green,playground,w1010474121,n13999525208,13,nodo dentro del polígono
+green,park,w26117848,w665127844,0,mismo nombre a <40 m
+green,playground,w242145509,w242145513,27,mismo nombre a <40 m
+education,kindergarten,w588473876,w254962465,39,mismo nombre a <40 m
+green,park,w553351891,w553375981,31,mismo nombre a <40 m
+green,park,w553351891,w553375980,26,mismo nombre a <40 m
+green,park,w553351894,w553351897,36,mismo nombre a <40 m
+green,park,w553351895,w553351896,28,mismo nombre a <40 m
+green,park,w553375982,w553375997,27,mismo nombre a <40 m
+green,park,w553375982,w553375996,34,mismo nombre a <40 m
+green,park,w553375983,w553375998,27,mismo nombre a <40 m
+green,park,w553375984,w553375987,21,mismo nombre a <40 m
+education,kindergarten,w588473876,w588474651,34,mismo nombre a <40 m
+education,kindergarten,w588473876,w588474660,21,mismo nombre a <40 m
+education,kindergarten,w588473876,w588474663,25,mismo nombre a <40 m
+education,kindergarten,w588473876,w588474664,29,mismo nombre a <40 m
+education,kindergarten,w588473876,w588474647,10,mismo nombre a <40 m
+education,kindergarten,w588473876,w588474654,17,mismo nombre a <40 m
+station,station,w604683109,w604682363,18,mismo nombre a <40 m
+green,playground,w773857178,w773857179,34,mismo nombre a <40 m
+education,school,w1433772382,w1433772383,0,mismo nombre a <40 m
